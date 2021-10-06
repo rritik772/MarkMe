@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import Login from './Components/Login/Login';
+import "./CSS/index.css"
 
 function App() {
   return (
     <>
-      <h1>Hello, World</h1>
-      <Login/>
+      <h1 class="text-rose-500">Hello, World</h1>
     </>
   )
 }

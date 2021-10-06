@@ -4,11 +4,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "tailwind:css": "tailwind build -i src/CSS/tailwind.css -c tailwind.config.js -o src/CSS/index.css",
+    "production:tailwind": "NODE_ENV=production npx tailwindcss -i src/CSS/tailwind.css -o src/CSS/index.css"
   },
   "dependencies": {
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "tailwindcss": "^2.2.16"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
