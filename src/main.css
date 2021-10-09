@@ -23,8 +23,8 @@
 }
 
 @font-face {
-    font-family: "IBM Plex Serif-Medium";
-    src: local("IBM Plex Serif-Medium"),
+    font-family: "IBM Plex Serif Medium";
+    src: local("IBM Plex Serif Medium"),
          url("./Fonts/IBM/IBMPlexSerif-Medium.ttf")
             format("truetype");
     font-weight: 500;
@@ -35,7 +35,6 @@
     src: local("Righteous"),
          url("./Fonts/Righteous/Righteous.ttf")
             format("truetype");
-    font-weight: 500;
 }
 
 @font-face {
