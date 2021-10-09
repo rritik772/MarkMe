@@ -1,4 +1,4 @@
-import Login from "../Login/Login";
+import Dashboard from "../Dashboard/Dashboard";
 import "./Index.css"
 
 function Index() {
@@ -7,8 +7,8 @@ function Index() {
       <nav className="top-0 m-5 p-5 bg-sky-500 rounded-lg text-center sticky">
         <span className="text-2xl text-bold text-white tracking-widest font-Sharp-sans align-middle">MARK ME!</span>
       </nav>
-      <main className="my-32">
-        <Login/>
+      <main className="">
+        <Dashboard/>
       </main>
       <footer className="w-full space-x-12 text-center absolute bottom-4">
         <a href="Contact">Contact Me</a>
