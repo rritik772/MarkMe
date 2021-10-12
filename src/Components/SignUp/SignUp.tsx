@@ -7,15 +7,15 @@ function SignUp() {
       <form>
         <div className="flex flex-col space-y-5 text-lg">
           <div className="flex flex-col space-y-2">
-            <label for="name" className="text-wide font-plex-serif">Full name</label>
+            <label htmlFor="name" className="text-wide font-plex-serif">Full name</label>
             <input type="text" id="name" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans"/>
           </div>
           <div className="flex flex-col space-y-2">
-            <label for="unique_id" className="text-wide font-plex-serif">Unique ID</label>
+            <label htmlFor="unique_id" className="text-wide font-plex-serif">Unique ID</label>
             <input type="text" id="unique_id" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans"/>
           </div>
           <div className="flex flex-col space-y-2">
-            <label for="unversity" className="text-wide font-plex-serif">University</label>
+            <label htmlFor="unversity" className="text-wide font-plex-serif">University</label>
             <input type="text" id="university" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans"/>
           </div>
           <div className="space-x-4 grid grid-cols-2">

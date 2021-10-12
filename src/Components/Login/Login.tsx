@@ -7,16 +7,16 @@ function Login() {
         <form>
           <div className="flex flex-col space-y-5 text-lg">
             <div className="flex flex-col space-y-2">
-              <label for="email" className="text-wide font-plex-serif">Email</label>
+              <label htmlFor="email" className="text-wide font-plex-serif">Email</label>
               <input type="email" id="email" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans"/>
             </div>
             <div className="flex flex-col space-y-2">
-              <label for="password" className="text-wide font-plex-serif">Password</label>
+              <label htmlFor="password" className="text-wide font-plex-serif">Password</label>
               <input type="password" id="password" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans"/>
             </div>
             <div className="space-x-2 align-middle">
               <input type="checkbox" id="remember_me" className=""/>
-              <label for="remember_me" className="font-plex-serif">Remember me?</label>
+              <label htmlFor="remember_me" className="font-plex-serif">Remember me?</label>
             </div>
             <div className="space-x-4 grid grid-cols-2">
               <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg">Clear</button>

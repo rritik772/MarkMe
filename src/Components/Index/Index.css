@@ -21,3 +21,9 @@
 .font-righteous {
     font-family: "Righteous";
 }
+
+footer {
+    clear: both;
+    position: relative;
+    margin-top: -200px;
+}
