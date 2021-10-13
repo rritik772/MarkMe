@@ -18,8 +18,7 @@ function Index() {
         <span className="self-start text-2xl text-bold text-white tracking-widest font-sharp-sans align-middle">MARK ME!</span>
         <section className="self-center flex flex-col md:flex-row items-end md:space-x-5 text-white">
         {
-          (toggleNavBar) &&
-          <section className="flex flex-col md:flex-row items-end md:space-x-5 text-center order-last md:order-first">
+          <section className={`flex flex-col md:flex-row items-end ${(toggleNavBar)?'block':'hidden'} md:block md:space-x-5 text-center order-last md:order-first`}>
             <a href="Contact" className="hover:underline">Contact Me</a>
             <a href="About_me" className="hover:underline">About Me</a>
           </section>
