@@ -6,7 +6,8 @@
 ** DONE Login UI [2/2] <2021-10-08 Fri>
 *** DONE Nav bar
 *** DONE Fonts configuration
-** STRT Dashboard UI
+** DONE Dashboard UI
+*** TODO
 ** WAIT QR Code generator
 ** WAIT QR Code Scanner
 ** WAIT Profile

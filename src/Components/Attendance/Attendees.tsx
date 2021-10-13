@@ -9,7 +9,6 @@ function Attendees() {
   const [ toggleRemoveStudent, setToggleRemoveStudent ] = useToggle();
   const [ toggleSearchStudent, setToggleSearchStudent ] = useToggle();
 
-  console.log(toggleAddStudent);
   return (
     <>
       <div className="">
