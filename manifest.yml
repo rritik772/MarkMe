@@ -1,0 +1,6 @@
+applications:
+  - path: .
+    name: MarkMe
+    instance: 1
+    disk_quota: 1024M
+    memory: 128M
