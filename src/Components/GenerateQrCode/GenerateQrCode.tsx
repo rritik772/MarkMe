@@ -26,7 +26,6 @@ function GenerateQrCode() {
           <button className="w-full py-2 mt-5 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg">Generate Qr Code</button>
         </form>
         <section className="text-center place-self-center p-5 rounded-md border-4 border-sky-500 bg-white">
-          {/* <QrcodeIcon className="h-3/6"/> */}
           <QrCode value="never mind" className="mb-5"/>
           <span className="text-lg font-plex-sans-medium">Scan Me!</span>
         </section>

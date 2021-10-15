@@ -8,7 +8,7 @@
 *** DONE Fonts configuration
 ** DONE Dashboard UI
 *** TODO
-** WAIT QR Code generator
-** WAIT QR Code Scanner
+** DONE QR Code generator
+** DONE QR Code Scanner
 ** WAIT Profile
-** WAIT On Leave
+** DONE On Leave

@@ -7,6 +7,7 @@ import ExportCSV from "../ExportCSV/ExportCSV";
 import GenerateQrCode from "../GenerateQrCode/GenerateQrCode";
 import Leave from "../Leave/Leave";
 import Login from "../Login/Login";
+import ScanQrCode from '../ScanQrCode/ScanQrCode';
 import SignUp from "../SignUp/SignUp";
 import "./Index.css"
 
@@ -27,7 +28,7 @@ function Index() {
         </section>
       </nav>
       <main className="">
-        <Leave/>
+        <ScanQrCode/>
       </main>
     </>
   );
