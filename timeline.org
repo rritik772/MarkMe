@@ -1,0 +1,14 @@
+* Content
+
+* PROJ Timeline
+** DONE Initialized <2021-10-07 Thu>
+*** DONE Configured tailwind
+** DONE Login UI [2/2] <2021-10-08 Fri>
+*** DONE Nav bar
+*** DONE Fonts configuration
+** DONE Dashboard UI
+*** TODO
+** DONE QR Code generator
+** DONE QR Code Scanner
+** WAIT Profile
+** DONE On Leave

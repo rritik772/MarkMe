@@ -1,0 +1,54 @@
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: local("IBM Plex Sans"),
+         url("./Fonts/IBM/IBMPlexSans-Text.ttf")
+            format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "IBM Plex Serif";
+    src: local("IBM Plex Serif"),
+         url("./Fonts/IBM/IBMPlexSerif-Text.ttf")
+            format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans Medium";
+    src: local("IBM Plex Sans Medium"),
+         url("./Fonts/IBM/IBMPlexSans-Medium.ttf")
+            format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "IBM Plex Serif Medium";
+    src: local("IBM Plex Serif Medium"),
+         url("./Fonts/IBM/IBMPlexSerif-Medium.ttf")
+            format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Righteous";
+    src: local("Righteous"),
+         url("./Fonts/Righteous/Righteous.ttf")
+            format("truetype");
+}
+
+@font-face {
+    font-family: "Sharp Sans";
+    src: local("Sharp Sans"),
+         url("./Fonts/Sharp sans/Sharp_sans.ttf")
+            format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Sharp Sans regular";
+    src: local("Sharp Sans Regular"),
+         url("./Fonts/Sharp sans/Sharp_sans_Regular.ttf")
+            format("truetype");
+    font-weight: 500;
+}

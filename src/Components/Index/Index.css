@@ -1,0 +1,29 @@
+.font-plex-sans {
+    font-family: "IBM Plex Sans";
+}
+
+.font-plex-sans-medium {
+    font-family: "IBM Plex Sans Medium";
+}
+
+.font-plex-serif {
+    font-family: "IBM Plex Serif";
+}
+
+.font-plex-serif-medium {
+    font-family: "IBM Plex Serif Medium";
+}
+
+.font-sharp-sans {
+    font-family: "Sharp sans";
+}
+
+.font-righteous {
+    font-family: "Righteous";
+}
+
+footer {
+    clear: both;
+    position: relative;
+    margin-top: -200px;
+}

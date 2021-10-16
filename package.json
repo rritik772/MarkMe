@@ -1,0 +1,29 @@
+{
+  "name": "mark_me",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite --host",
+    "start": "vite --port 8080",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "tailwind:css": "tailwind build -i src/CSS/tailwind.css -c tailwind.config.js -o src/CSS/index.css",
+    "production:tailwind": "NODE_ENV=production npx tailwindcss -i src/CSS/tailwind.css -o src/CSS/index.css"
+  },
+  "dependencies": {
+    "@heroicons/react": "^1.0.4",
+    "react": "^17.0.2",
+    "react-barcode-reader": "^0.0.2",
+    "react-dom": "^17.0.2",
+    "react-qr-code": "^2.0.2",
+    "react-router-dom": "^5.3.0",
+    "react-weblineindia-qrcode-scanner": "^1.0.0",
+    "tailwindcss": "^2.2.16"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@vitejs/plugin-react": "^1.0.0",
+    "typescript": "^4.3.2",
+    "vite": "^2.6.0"
+  }
+}
