@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { LogoGithub32, LogoLinkedin32 } from "@carbon/icons-react"
 
 export default function AboutMe(){
   return (
@@ -16,12 +15,10 @@ export default function AboutMe(){
           </div>
           <div className="flex space-x-10 justify-center">
             <a href="https://github.com/rritik772" className="flex space-x-2 items-center hover:underline" >
-              <LogoGithub32 className="h-9 text-sky-500"/>
-              <span className="font-plex-sans-medium">rritik772</span>
+              <span className="font-plex-sans-medium">GitHub</span>
             </a>
             <a href="https://www.linkedin.com/in/ritik-ranjan-903461166/" className="flex space-x-2 items-center hover:underline" >
-              <LogoLinkedin32 className="h-9 text-sky-500"/>
-              <span className="font-plex-sans-medium">rritik772</span>
+              <span className="font-plex-sans-medium">LinkedIn</span>
             </a>
           </div>
         </div>
