@@ -35,7 +35,7 @@ function SingleAttendee({ Information }): React.FC<IAttendee> {
          overflow-auto space-x-1 md:space-x-5 cursor-pointer
          duration-500 hover:shadow-xl`}
       onClick={() => setIsClicked(!isClicked)}>
-      <section className="flex gap-2 justify-between">
+      <section className="flex space-x-4 justify-between overflow-auto">
         <div className="flex space-x-5 items-center">
           <EmojiHappyIcon className="h-8"/>
           <span className="text-lg font-plex-sans-medium truncate">{Information.name}</span>

@@ -1,11 +1,12 @@
 import { useState } from "react"
+import { Link } from "react-router-dom";
+import { ArrowCircleLeftIcon } from "@heroicons/react/outline"
 import MessageBox, { Message, IMessageType } from "../Message/MessageBox";
 import "./Leave.css"
 
 export default function Leave() {
   const [ remarks, setRemarks ] = useState<string>('');
   const [ meetingID, setMettingID ] = useState<string>('');
-
   const [ remarkLength, setRemarkLength ] = useState<number>(0);
   const [ alert, setAlert ] = useState<Message>();
 
@@ -30,11 +31,15 @@ export default function Leave() {
 
   return (
     <>
-      <span className="block my-5 w-full text-2xl text-center font-plex-sans-medium">Mark Me Leave</span>
+      <div className="w-full svg-background-layered-steps"></div>
+      <div className="md:w-1/2 lg:w-5/12 xl:w-4/12 mx-auto flex items-center mb-5">
+        <Link to="/dashboard"><ArrowCircleLeftIcon className="h-10 text-blue-500"/></Link>
+        <span className="block my-5 w-full text-3xl text-center font-plex-sans">Mark Me Leave</span>
+      </div>
       <main className="md:w-1/2 lg:w-5/12 xl:w-4/12 mx-auto p-5 rounded-md bg-sky-200 md:border-4 border-sky-500 shadow-lg space-y-5">
         <label htmlFor="meeting_id" className="flex flex-col space-y-2">
           <span className="text-lg font-plex-sans">Meeting ID *</span>
-          <input id="meeting_id" className="p-2 rounded-md text-lg font-plex-sans-medium" placeholder="Type here..." value={meetingID} onChange={(e) => meetingIDLengthChecker(e.target.value)}/>
+          <input autoFocus id="meeting_id" className="p-2 rounded-md text-lg font-plex-sans-medium" placeholder="Type here..." value={meetingID} onChange={(e) => meetingIDLengthChecker(e.target.value)}/>
         </label>
         <label htmlFor="remark" className="flex flex-col space-y-2">
           <span className="text-lg font-plex-sans">Remark</span>

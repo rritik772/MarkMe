@@ -18,6 +18,10 @@ function SignUp() {
             <label htmlFor="unversity" className="text-wide font-plex-serif">University</label>
             <input type="text" id="university" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans"/>
           </div>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="password" className="text-wide font-plex-serif">Repeat password</label>
+            <input type="password" id="password" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans"/>
+          </div>
           <div className="space-x-4 grid grid-cols-2">
             <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg">Clear</button>
             <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg">Done</button>
