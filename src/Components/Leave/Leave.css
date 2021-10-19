@@ -1,0 +1,10 @@
+.svg-background-layered-steps {
+    position: fixed;
+    background-image: url('../../Assets/SVG/layered-steps.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    bottom: 0;
+    height: 300px;
+    z-index: -1;
+}
