@@ -8,8 +8,10 @@ import useToggle from '../../Library/useToggle';
 import MessageBox, { Message } from '../Message/MessageBox';
 import MeetingInfo from './Meeting_Info';
 import InterfaceMeeting from "./InterfaceMeeting";
+import { withAuthenticationRequired } from '@auth0/auth0-react';
+import Loading from '../Loading/Loading';
 
-export default function ScanQrCode() {
+export function ScanQrCode() {
   const [ alert, setAlert ] = useState<Message>();
   const [ scannedData, setScannedData ] = useState<InterfaceMeeting>();
   const [ toggleCamera, setToggleCamera ] = useToggle(true);
@@ -67,3 +69,7 @@ export default function ScanQrCode() {
     </>
   );
 };
+
+export default withAuthenticationRequired(ScanQrCode, {
+  onRedirecting: () => <Loading/>
+})
