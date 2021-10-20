@@ -1,6 +1,6 @@
-export InterfaceColumns {
+export interface InterfaceColumns {
   index: boolean;
-  name: bolean;
+  name: boolean;
   email_id: boolean;
   status: boolean;
   remark: boolean;
@@ -9,6 +9,14 @@ export InterfaceColumns {
 };
 
 export class CSVColumns implements InterfaceColumns {
+  index: boolean;
+  name: boolean;
+  email_id: boolean;
+  status: boolean;
+  remark: boolean;
+  meeting_id: boolean;
+  university: boolean;
+
   constructor() {
     this.index = false;
     this.name = false;

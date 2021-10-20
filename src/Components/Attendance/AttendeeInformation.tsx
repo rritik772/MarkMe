@@ -3,7 +3,11 @@ import { EmojiHappyIcon } from "@heroicons/react/outline";
 
 import { IAttendee, Status } from "./InterfaceAttendee";
 
-function AttendeeInformation({ attendeeInfo }): React.FC<IAttendee> {
+interface IAttendeInformation {
+  attendeeInfo: IAttendee
+};
+
+const AttendeeInformation: React.FC<IAttendeInformation> = ({ attendeeInfo }): JSX.Element => {
   return(
     <>
       <main className="grid grid-cols-1 md:grid-cols-2 gap-1 text-left place-items-start md:px-8 rounded-md">

@@ -12,14 +12,20 @@ export interface IMessage {
 }
 
 export class Message implements IMessage{
+  messageType: IMessageType;
+  messageString: string;
+
   constructor(message_type: IMessageType, message_string: string) {
     this.messageType = message_type;
     this.messageString = message_string;
   }
 }
 
-export default function MessageBox( props ): React.FC<Message> {
-  const { message } = props;
+interface IMessageBox {
+  message: Message
+}
+
+const MessageBox:React.FC<IMessageBox> =  ({ message }): JSX.Element  => {
 
   if ( message == undefined ) return <></>;
   console.log(message.messageType)
@@ -35,3 +41,5 @@ export default function MessageBox( props ): React.FC<Message> {
     </main>
   )
 }
+
+export default MessageBox;

@@ -5,13 +5,13 @@ import useToggle from "../../Library/useToggle";
 import AddStudent from "../AddStudent/AddStudent";
 import RemoveStudent from "../RemoveStudent/RemoveStudent";
 import SearchStudent from "../SearchStudent/SearchStudent";
-import Attendee from "./Attendee"
-;
-function Attendees() {
+import Attendee from "./Attendee";
+
+const Attendees = ():JSX.Element => {
   const [ toggleAddStudent, setToggleAddStudent ] = useToggle();
   const [ toggleRemoveStudent, setToggleRemoveStudent ] = useToggle();
-  const [ toggleSearchStudent, setToggleSearchStudent ] = useToggle()
-  ;
+  const [ toggleSearchStudent, setToggleSearchStudent ] = useToggle();
+
   return (
     <>
       <div className="space-y-10">

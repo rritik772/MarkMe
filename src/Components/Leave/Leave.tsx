@@ -10,7 +10,7 @@ export function Leave() {
   const [ remarks, setRemarks ] = useState<string>('');
   const [ meetingID, setMettingID ] = useState<string>('');
   const [ remarkLength, setRemarkLength ] = useState<number>(0);
-  const [ alert, setAlert ] = useState<Message>();
+  const [ alert, setAlert ] = useState<Message | undefined>();
 
   const remarksLengthChecker = (rmk: string) => {
     if (rmk.length >= 501){
@@ -19,16 +19,16 @@ export function Leave() {
     }
     setRemarkLength(rmk.length);
     setRemarks(rmk);
-    setAlert(null);
+    setAlert(undefined);
   }
 
-  const meetingIDLengthChecker = (mt_ID: stirng) => {
+  const meetingIDLengthChecker = (mt_ID: string) => {
     if (mt_ID.length >= 101){
       setAlert( new Message(1, "Meeting ID is too long") );
       return;
     }
     setMettingID(mt_ID);
-    setAlert(null)
+    setAlert(undefined);
   }
 
   return (

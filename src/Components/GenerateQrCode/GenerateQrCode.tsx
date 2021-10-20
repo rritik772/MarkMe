@@ -1,6 +1,6 @@
 import { QrcodeIcon, ArrowCircleLeftIcon, ArrowCircleRightIcon} from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
-import { useCallback, useMemo, useState } from "react";
+import { FormEvent, useCallback, useMemo, useState } from "react";
 
 import "./GenerateQrCode.css"
 import QrCode from "react-qr-code";
@@ -13,7 +13,7 @@ export function GenerateQrCode() {
   const [ hostEmailID, setHostEmailID ] = useState<string>();
   const [ QRCodeString, setQRCodeString ] = useState<string>();
 
-  const qrString = (e) => {
+  const qrString = (e: FormEvent) => {
     e.preventDefault();
 
     const data =  {
@@ -39,15 +39,15 @@ export function GenerateQrCode() {
         <main className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full lg:w-1/2 mx-auto p-5 bg-white shadow-xl">
           <form className="p-5 space-y-4 text-lg" onSubmit={e => qrString(e)}>
             <div className="flex flex-col space-y-2">
-              <label for="meeting_id font-plex-sans">Meeting ID</label>
+              <label htmlFor="meeting_id font-plex-sans">Meeting ID</label>
               <input type="number" autoFocus id="meeting_id" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={meetingID} onChange={(e) => setMeetingID(e.target.value)} placeholder="Type here..."/>
             </div>
             <div className="flex flex-col space-y-2">
-              <label for="topic">Topic</label>
+              <label htmlFor="topic">Topic</label>
               <input type="text" id="topic" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="Type here..."/>
             </div>
             <div className="flex flex-col space-y-2">
-              <label for="host_id" className="">Host Email ID</label>
+              <label htmlFor="host_id" className="">Host Email ID</label>
               <input type="email" id="host_id" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={hostEmailID} onChange={(e) => setHostEmailID(e.target.value)} placeholder="Type here..."/>
             </div>
             <button className="w-full py-2 mt-5 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" type="submit">Generate Qr Code</button>
