@@ -1,8 +1,14 @@
 import { CameraIcon, QrcodeIcon, IdentificationIcon, BriefcaseIcon } from "@heroicons/react/outline";
 import "./Dashboard.css"
-import { Link } from "react-router-dom"
-;
-function Dashboard() {
+import { Link } from "react-router-dom";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import Loading from "../Loading/Loading";
+
+export function Dashboard() {
+  const { user } = useAuth0();
+
+  console.log(user);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center space-y-5">
@@ -32,4 +38,7 @@ function Dashboard() {
     </>
   );
 }
-export default Dashboard;
+
+export default withAuthenticationRequired(Dashboard, {
+  onRedirecting: () => <Loading/>
+})

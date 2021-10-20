@@ -4,8 +4,10 @@ import { useCallback, useMemo, useState } from "react";
 
 import "./GenerateQrCode.css"
 import QrCode from "react-qr-code";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
+import Loading from "../Loading/Loading";
 
-function GenerateQrCode() {
+export function GenerateQrCode() {
   const [ meetingID, setMeetingID ] = useState<string>('');
   const [ topic, setTopic ] = useState<string>('');
   const [ hostEmailID, setHostEmailID ] = useState<string>();
@@ -60,4 +62,6 @@ function GenerateQrCode() {
   );
 }
 
-export default GenerateQrCode;
+export default withAuthenticationRequired(GenerateQrCode, {
+  onRedirecting: () => <Loading/>
+})
