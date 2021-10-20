@@ -1,11 +1,13 @@
-const Attendees = [
+import { IAttendee } from "../../Components/Attendance/InterfaceAttendee";
+
+const Attendees: IAttendee[] = [
   {
     'id': 123,
     'name': 'Bumble Bee',
     'university': 'Cybertron',
     'meeting_id': '123456',
     'email_id': 'bumblebee@autobot.cy',
-    'status': 'Present'
+    'status': 3
   },
   {
     'id': 123,
@@ -13,7 +15,7 @@ const Attendees = [
     'university': 'Cybertron',
     'meeting_id': '123456',
     'email_id': 'optimus@autobot.cy',
-    'status': 'Present'
+    'status': 3
   },
   {
     'id': 123,
@@ -21,7 +23,7 @@ const Attendees = [
     'university': 'Cybertron',
     'meeting_id': '123456',
     'email_id': 'starscream@cybertron.cy',
-    'status': 'Absent'
+    'status': 2
   },
   {
     'id': 123,
@@ -29,7 +31,7 @@ const Attendees = [
     'university': 'Cybertron',
     'meeting_id': '123456',
     'email_id': 'hound@autobot.cy',
-    'status': 'Leave'
+    'status': 1
   },
   {
     'id': 123,
@@ -37,7 +39,7 @@ const Attendees = [
     'university': 'Cybertron',
     'meeting_id': '123456',
     'email_id': 'shockwave@decepticon.cy',
-    'status': 'Present'
+    'status': 3
   },
   {
     'id': 123,
@@ -45,7 +47,7 @@ const Attendees = [
     'university': 'Cybertron',
     'meeting_id': '123456',
     'email_id': 'Megatron@decepticon.cy',
-    'status': 'Present'
+    'status': 3
   },
   {
     'id': 123,
@@ -53,7 +55,7 @@ const Attendees = [
     'university': 'Cybertron',
     'meeting_id': '123456',
     'email_id': 'ironhide@autobot.cy',
-    'status': 'Leave'
+    'status': 1
   },
 ]
 

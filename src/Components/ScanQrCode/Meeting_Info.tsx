@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import MessageBox, { Message } from "../Message/MessageBox";
 import InterfaceMeeting from "./InterfaceMeeting";
 
-export default function MeetingInfo( { scannedData } ): React.FC<InterfaceMeeting> {
+interface IMeetingInfo {
+  scannedData: InterfaceMeeting | undefined
+}
+
+const MeetingInfo: React.FC<IMeetingInfo> = ( { scannedData } ): JSX.Element =>  {
 
   let meetingID = "Not Avaliable";
   let topic = "Not Avaliable";
@@ -33,3 +37,4 @@ export default function MeetingInfo( { scannedData } ): React.FC<InterfaceMeetin
     </>
   )
 }
+export default MeetingInfo;

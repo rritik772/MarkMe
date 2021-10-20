@@ -12,15 +12,15 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Loading from '../Loading/Loading';
 
 export function ScanQrCode() {
-  const [ alert, setAlert ] = useState<Message>();
-  const [ scannedData, setScannedData ] = useState<InterfaceMeeting>();
+  const [ alert, setAlert ] = useState<Message | null>();
+  const [ scannedData, setScannedData ] = useState<InterfaceMeeting | undefined>();
   const [ toggleCamera, setToggleCamera ] = useToggle(true);
 
   const handleScanningResult = (value: string) => {
-    setScannedData();
+    setScannedData(undefined);
     if (value !== null && value.length > 0){
       try {
-        const data = JSON.parse(value);
+        const data: InterfaceMeeting = JSON.parse(value);
 
         if (data.meeting_id == undefined || data.host_email_id == undefined || data.topic == undefined) throw "Invalid QRcode";
 
@@ -50,8 +50,8 @@ export function ScanQrCode() {
            <QrReader
              delay={50}
              style={{height: 340}}
-             onError={(e) => setAlert(new Message(0, "Something went wrong."))}
-             onScan={(e) => handleScanningResult(e)}
+             onError={(e: any) => setAlert(new Message(0, "Something went wrong."))}
+             onScan={(e: any) => handleScanningResult(e)}
            />
          </section> :
          <MeetingInfo scannedData={scannedData}/>

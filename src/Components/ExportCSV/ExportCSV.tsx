@@ -1,4 +1,4 @@
-import { CSVColumns } from "InterfaceColumns";
+import { CSVColumns } from "./InterfaceColumns";
 
 function ExportCSV() {
   return (

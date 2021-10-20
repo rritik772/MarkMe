@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import DropDown from "./DropDownSelector";
 
 function SignUp() {
   return (

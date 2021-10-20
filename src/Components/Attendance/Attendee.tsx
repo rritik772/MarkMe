@@ -5,8 +5,13 @@ import Attendees from "./../../Test/Attendance/Attendees";
 import { IAttendee, Status } from "./InterfaceAttendee";
 import AttendeeInformation from "./AttendeeInformation";
 
-function Attendee() {
-  const [attendees, setAttendees] = useState<IAttendee>(Attendees);
+interface ISingleAttendee {
+  Information: IAttendee,
+  key: number
+};
+
+const Attendee = (): JSX.Element => {
+  const [attendees, setAttendees] = useState<IAttendee[]>(Attendees);
 
   return(
     <>
@@ -19,22 +24,22 @@ function Attendee() {
   );
 };
 
-function SingleAttendee({ Information }): React.FC<IAttendee> {
+const SingleAttendee: React.FC<ISingleAttendee> = ({ Information }): JSX.Element => {
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
   return (
     <button
       className={
         `grid grid-rows-auto w-full
-         p-5 rounded-md
-         ${
-            (Information.status === Status.Present)?'bg-white hover:bg-sky-100':
-            (Information.status === Status.Leave)?  'bg-yellow-100 hover:bg-yellow-200':
-                                                    'bg-red-100 hover:bg-red-200'
+          p-5 rounded-md
+          ${
+          (Information.status === Status.Present)?'bg-white hover:bg-sky-100':
+          (Information.status === Status.Leave)?  'bg-yellow-100 hover:bg-yellow-200':
+          'bg-red-100 hover:bg-red-200'
           }
-         overflow-auto space-x-1 md:space-x-5 cursor-pointer
-         duration-500 hover:shadow-xl`}
-      onClick={() => setIsClicked(!isClicked)}>
+          overflow-auto space-x-1 md:space-x-5 cursor-pointer
+          duration-500 hover:shadow-xl`}
+          onClick={() => setIsClicked(!isClicked)}>
       <section className="flex space-x-4 justify-between overflow-auto">
         <div className="flex space-x-5 items-center">
           <EmojiHappyIcon className="h-8"/>
@@ -46,8 +51,8 @@ function SingleAttendee({ Information }): React.FC<IAttendee> {
               <span className="truncate">{Information.email_id}</span>
             </div>
         }
-       </section>
-      { (isClicked)&&<AttendeeInformation onClick={(e) => setIsClicked(e)} attendeeInfo={Information}/> }
+      </section>
+      { (isClicked)&&<AttendeeInformation attendeeInfo={Information}/> }
     </button>
   );
 };
