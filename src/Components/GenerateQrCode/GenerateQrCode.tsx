@@ -1,9 +1,9 @@
 import { QrcodeIcon, ArrowCircleLeftIcon, ArrowCircleRightIcon} from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import { FormEvent, useCallback, useMemo, useState } from "react";
+import QRCode from "qrcode.react";
 
 import "./GenerateQrCode.css"
-import QrCode from "react-qr-code";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
 
@@ -11,7 +11,7 @@ export function GenerateQrCode() {
   const [ meetingID, setMeetingID ] = useState<string>('');
   const [ topic, setTopic ] = useState<string>('');
   const [ hostEmailID, setHostEmailID ] = useState<string>();
-  const [ QRCodeString, setQRCodeString ] = useState<string>();
+  const [ QRCodeString, setQRCodeString ] = useState<string>('');
 
   const qrString = (e: FormEvent) => {
     e.preventDefault();
@@ -25,7 +25,6 @@ export function GenerateQrCode() {
     const json = JSON.stringify(data);
     setQRCodeString(json);
   };
-
 
   return (
     <>
@@ -53,7 +52,10 @@ export function GenerateQrCode() {
             <button className="w-full py-2 mt-5 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" type="submit">Generate Qr Code</button>
           </form>
           <section className="text-center place-self-center p-5 rounded-md border-4 border-black bg-white">
-            <QrCode value={`${QRCodeString}`} className="mb-5"/>
+            <QRCode
+              value={QRCodeString}
+              size={250}
+            />
             <span className="text-lg font-plex-sans-medium">Scan Me!</span>
           </section>
         </main>

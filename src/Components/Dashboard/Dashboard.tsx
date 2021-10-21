@@ -7,8 +7,6 @@ import Loading from "../Loading/Loading";
 export function Dashboard() {
   const { user } = useAuth0();
 
-  console.log(user);
-
   return (
     <>
       <div className="flex flex-col justify-center items-center space-y-5">
