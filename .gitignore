@@ -5,4 +5,4 @@ dist-ssr
 *.local
 cert.pem
 key.pem
-.env
+.env*
