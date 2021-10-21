@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import QrReader from 'react-weblineindia-qrcode-scanner'
+import QrReader from 'react-qr-reader'
 import { Link } from "react-router-dom";
 import { ArrowCircleLeftIcon } from "@heroicons/react/outline";
 
