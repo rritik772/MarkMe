@@ -13,10 +13,9 @@
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
     "@heroicons/react": "^1.0.4",
-    "react": "^16.13.0",
+    "react": "^16.8.3",
     "react-barcode-reader": "^0.0.2",
-    "react-dom": "^16.13.0",
-    "react-router-dom": "^16.13.0",
+    "react-dom": "^16.8.3",
     "react-weblineindia-qrcode-scanner": "^1.0.0",
     "tailwindcss": "^2.2.16"
   },
