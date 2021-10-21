@@ -11,9 +11,9 @@ interface auth0config{
 }
 
 const config: auth0config = {
-  domain: "mark-me.jp.auth0.com",
-  clientId: "YeEJDkwKk7DYeEJDkwKk7DQRY2sxg9mpX3IcI5C9lGiQRY2sxg9mpX3IcI5C9lGi",
-  redirectUri: `${window.location.origin}/dashboard`
+  domain: import.meta.env.VITE_APP_DOMAIN as string,
+  clientId: import.meta.env.VITE_APP_CLIENT_ID as string,
+  redirectUri: `${window.location.origin}/dashboard` as string
 }
 
 ReactDOM.render(
