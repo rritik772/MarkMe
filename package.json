@@ -7,7 +7,8 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "tailwind:css": "tailwind build -i src/CSS/tailwind.css -c tailwind.config.js -o src/CSS/index.css",
-    "production:tailwind": "NODE_ENV=production npx tailwindcss -i src/CSS/tailwind.css -o src/CSS/index.css"
+    "production:tailwind": "NODE_ENV=production npx tailwindcss -i src/CSS/tailwind.css -o src/CSS/index.css",
+    "production": "NODE_ENV=production npx tailwindcss -i src/CSS/tailwind.css -o src/CSS/index.css && tsc && vite build"
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
