@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import { ArrowCircleLeftIcon } from "@heroicons/react/outline"
 import MessageBox, { Message, IMessageType } from "../Message/MessageBox";
 import "./Leave.css"
-import { withAuthenticationRequired } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
 
-export function Leave() {
+const Leave = () => {
   const [ remarks, setRemarks ] = useState<string>('');
   const [ meetingID, setMettingID ] = useState<string>('');
   const [ remarkLength, setRemarkLength ] = useState<number>(0);
@@ -57,7 +56,4 @@ export function Leave() {
     </>
   )
 };
-
-export default withAuthenticationRequired(Leave, {
-  onRedirecting: () => <Loading/>
-})
+export default Leave;
