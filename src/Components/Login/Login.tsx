@@ -16,7 +16,7 @@ function Login() {
 
   if ( currentUser ) history.push("/dashboard");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setAlert(undefined);
     e.preventDefault();
 
@@ -27,8 +27,15 @@ function Login() {
       setAlert(new Message(0, "Email too short."))
       return;
     }else {
-      Login(email, sha256(password));
-      history.push("/dashboard")
+      const message: Message = await Login!!(email, sha256(password));
+      const messageType = await message.messageType;
+
+      if ( messageType === 2 ){
+        setAlert(message)
+        history.push("/dashboard")
+      }else {
+        setAlert(message);
+      }
     }
   }
 

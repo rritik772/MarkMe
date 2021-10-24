@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Redirect, Route } from "react-router-dom";
 import { useAuth } from '../../Context/AuthContext';
 
-const PrivateRoute: React.FC = ({ comp: Component, ...rest }): JSX.Element => {
+export interface IPrivateRoute {
+  exact: boolean;
+  comp: () => JSX.Element;
+  path: string;
+}
+
+const PrivateRoute: React.FC<IPrivateRoute> = ({ comp: Component, ...rest }): JSX.Element => {
   const { loading, currentUser } = useAuth();
   if ( currentUser )
     console.log( "User logged in: ", currentUser.email )
@@ -11,7 +17,7 @@ const PrivateRoute: React.FC = ({ comp: Component, ...rest }): JSX.Element => {
 
   return (
     <Route {...rest} render={ props => {
-      return currentUser? <Component {...props}/> : <Redirect to="/"/>
+      return currentUser? React.createElement(Component, props) : <Redirect to="/"/>
     }}>
     </Route>
   )

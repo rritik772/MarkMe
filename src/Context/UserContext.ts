@@ -14,9 +14,9 @@ export interface ISignup {
 
 ////
 // create users and its infomation
-export const signup = async (signupDetails: ISignup): Message => {
+export const signup = async (signupDetails: ISignup): Promise<Message> => {
   return await createUserWithEmailAndPassword(auth, signupDetails.email, signupDetails.password)
-    .then(async (userCredential): Message => {
+    .then(async (userCredential): Promise<Message> => {
       const { user }  = userCredential;
       const user_id = user.uid;
 
@@ -47,11 +47,10 @@ export const signup = async (signupDetails: ISignup): Message => {
 
 ////
 // login user
-export const login = async (email: string, password: string): Message => {
+export const login = async (email: string, password: string): Promise<Message> => {
   return await signInWithEmailAndPassword(auth, email, password)
     .then(( userCrediential ): Message => {
-      if ( userCrediential.user )
-        return new Message(2, "Successfull Logged in.")
+      return new Message(2, "Successful Logged in.")
     })
     .catch((error): Message => {
       return new Message(0, "Something is wrong.")
@@ -63,7 +62,7 @@ export const login = async (email: string, password: string): Message => {
 
 ////
 // logout user
-export const logout = async (): Message => {
+export const logout = async (): Promise<Message> => {
   return signOut(auth)
     .then((): Message => {
       console.log("Logged out user")

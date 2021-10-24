@@ -17,7 +17,7 @@ export interface ICreateQrCode {
   docID: string
 }
 
-export const createQrCode = async (qrCodeDetails: IQrCode): ICreateQrCode => {
+export const createQrCode = async (qrCodeDetails: IQrCode): Promise<ICreateQrCode> => {
   return await addDoc(collection(firestore, "qrcode"), {
     meeting_id: qrCodeDetails.meeting_id,
     topic: qrCodeDetails.topic,

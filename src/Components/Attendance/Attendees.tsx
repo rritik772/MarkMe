@@ -7,8 +7,8 @@ import RemoveStudent from "../RemoveStudent/RemoveStudent";
 import SearchStudent from "../SearchStudent/SearchStudent";
 import Attendee from "./Attendee";
 
-const Attendees: React.FC = (): JSX.Element => {
-  const { docRef } = useParams();
+const Attendees = (): JSX.Element => {
+  const { docRef } = useParams<{ docRef: string }>();
 
   const [ toggleAddStudent, setToggleAddStudent ] = useToggle();
   const [ toggleRemoveStudent, setToggleRemoveStudent ] = useToggle();

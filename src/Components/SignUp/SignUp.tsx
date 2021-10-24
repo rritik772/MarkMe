@@ -4,7 +4,6 @@ import { sha256 } from "js-sha256";
 
 import MessageBox, { Message } from "../Message/MessageBox";
 import { useAuth } from "../../Context/AuthContext";
-import { APIKEY } from "../../../firebase";
 import { Redirect, useHistory } from "react-router-dom";
 import { ISignup } from "../../Context/UserContext";
 
@@ -19,10 +18,10 @@ function SignUp() {
   const [ alert, setAlert ] = useState<Message | undefined>();
   const [ formVisible, setFormVisible ] = useToggle(true);
 
-  const { currentuser, SignUp } = useAuth();
+  const { currentUser, SignUp } = useAuth();
   const history = useHistory();
 
-  if ( currentuser ) history.push("/dashboard")
+  if ( currentUser ) history.push("/dashboard")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,7 +58,7 @@ function SignUp() {
         password: hashedPass
       };
 
-      const message: Message = await SignUp(signupDetails);
+      const message: Message = await SignUp!!(signupDetails);
       console.log(message)
       const messageType = await message.messageType
       if ( messageType === 2 )
@@ -75,7 +74,7 @@ function SignUp() {
       alert && <MessageBox message={alert}/>
     }
       <main className="md:w-1/2 lg:w-5/12 xl:w-4/12 mx-auto p-5 rounded-md shadow-sm border-2 border-gray-200 hover:shadow-xl duration-200">
-        <form onSubmit={(e: React.FormEvent) => handleSubmit(e)}>
+        <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
           <div className="flex flex-col space-y-5 text-lg">
             {
               (formVisible) &&

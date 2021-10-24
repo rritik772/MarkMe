@@ -5,12 +5,37 @@ import Loading from "../Components/Loading/Loading";
 import useToggle from "../Library/useToggle"
 import { Message } from "../Components/Message/MessageBox";
 import { auth } from "./../../firebase";
-import { createQrCode, IQrCode } from "./QRCodeContext";
+import { createQrCode, ICreateQrCode, IQrCode } from "./QRCodeContext";
 import { ISignup, login, logout, signup } from "./UserContext";
 
-const AuthContext = React.createContext(undefined);
+////
+// Context types
+export interface AuthContextType {
+    loading: boolean;
+    currentUser: User | undefined;
+    SignUp: undefined | ((signupDetails: ISignup) => Promise<Message>);
+    Login: undefined  | ((email: string, password: string) => Promise<Message>);
+    Logout: undefined | (() => Promise<Message>);
+    createqrcode: undefined | ((qrCodeDetails: IQrCode) => Promise<ICreateQrCode>);
+}
+
+const AuthContextTypeDefault: AuthContextType =  {
+    loading: false,
+    currentUser: undefined,
+    SignUp: undefined,
+    Login: undefined,
+    Logout: undefined,
+    createqrcode: undefined,
+}
+
+// -----------------------------------------------------
+
+////
+// Pre Context
+const AuthContext = React.createContext<AuthContextType>(AuthContextTypeDefault as AuthContextType);
 
 export const useAuth = () => useContext( AuthContext );
+// ----------------------------------------------------
 
 export const AuthProvider: React.FC = ({ children }) => {
     // ---------------------------------------------------------
@@ -18,15 +43,15 @@ export const AuthProvider: React.FC = ({ children }) => {
     const [ loading, setLoading ] = useState<boolean>(true)
     const [ currentUser, setCurrentUser ] = useState<User | undefined>();
 
-    async function SignUp(signupDetails: ISignup): Message {
+    async function SignUp(signupDetails: ISignup): Promise<Message> {
         return await signup( signupDetails )
     }
 
-    async function Login(email: string, password: string): Message{
+    async function Login(email: string, password: string): Promise<Message> {
         return await login(email, password);
     }
 
-    async function Logout(): Message{
+    async function Logout(): Promise<Message> {
         return await logout();
     }
 
@@ -48,7 +73,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     ////
     // QR Code
-    const createqrcode = async (qrCodeDetails: IQrCode): Message => {
+    const createqrcode = async (qrCodeDetails: IQrCode): Promise<ICreateQrCode> => {
         return await createQrCode(qrCodeDetails)
     }
     // -----------------------------------------------------------------
