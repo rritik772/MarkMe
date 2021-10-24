@@ -1,11 +1,11 @@
 import { CameraIcon, QrcodeIcon, IdentificationIcon, BriefcaseIcon } from "@heroicons/react/outline";
 import "./Dashboard.css"
 import { Link } from "react-router-dom";
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import Loading from "../Loading/Loading";
+import { useAuth } from "../../Context/AuthContext";
 
-export function Dashboard() {
-  const { user } = useAuth0();
+const Dashboard = (): JSX.Element => {
+  const { currentUser } = useAuth();
 
   return (
     <>
@@ -36,7 +36,4 @@ export function Dashboard() {
     </>
   );
 }
-
-export default withAuthenticationRequired(Dashboard, {
-  onRedirecting: () => <Loading/>
-})
+export default Dashboard

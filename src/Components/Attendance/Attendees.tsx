@@ -1,5 +1,5 @@
 import { QrcodeIcon, ArrowCircleLeftIcon, ArrowCircleRightIcon} from "@heroicons/react/outline";
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 ;
 import useToggle from "../../Library/useToggle";
 import AddStudent from "../AddStudent/AddStudent";
@@ -7,7 +7,9 @@ import RemoveStudent from "../RemoveStudent/RemoveStudent";
 import SearchStudent from "../SearchStudent/SearchStudent";
 import Attendee from "./Attendee";
 
-const Attendees = ():JSX.Element => {
+const Attendees: React.FC = (): JSX.Element => {
+  const { docRef } = useParams();
+
   const [ toggleAddStudent, setToggleAddStudent ] = useToggle();
   const [ toggleRemoveStudent, setToggleRemoveStudent ] = useToggle();
   const [ toggleSearchStudent, setToggleSearchStudent ] = useToggle();
