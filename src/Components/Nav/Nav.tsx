@@ -14,12 +14,12 @@ const Nav = () => {
   const history = useHistory();
 
   const logoutUser = async () => {
-    const message: Message = await Logout();
+    const message: Message = await Logout!!();
     const messageType = await message.messageType;
 
     if ( messageType === 2 ){
       console.log("Logged out")
-      window.location.reload(false)
+      window.location.reload()
     }else {
       setAlert(message)
     }

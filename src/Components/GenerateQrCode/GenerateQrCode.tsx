@@ -12,7 +12,7 @@ import { Message } from "../Message/MessageBox";
 const GenerateQrCode = () => {
   const [ meetingID, setMeetingID ] = useState<string>('');
   const [ topic, setTopic ] = useState<string>('');
-  const [ hostEmailID, setHostEmailID ] = useState<string>();
+  const [ hostEmailID, setHostEmailID ] = useState<string>('');
   const [ QRCodeString, setQRCodeString ] = useState<string>('');
   const [ alert, setAlert ] = useState<Message | undefined>();
   const [ docID, setDocID ] = useState<string>('');
@@ -47,7 +47,7 @@ const GenerateQrCode = () => {
   const handleWritingQrCode = async (e: React.FormEvent)=> {
     e.preventDefault();
 
-    const { uid } = currentUser;
+    const { uid } = currentUser!!;
 
     const datetimestamp = new Date();
     const [ datestamp, timestamp ] = datetimestamp.toLocaleString().split(", ")
@@ -62,7 +62,7 @@ const GenerateQrCode = () => {
       destroyed: false
     }
 
-    const result: ICreateQrCode = await createqrcode(qrCodeDetails)
+    const result: ICreateQrCode = await createqrcode!!(qrCodeDetails)
 
     const messageType = await result.message.messageType;
     const doc_id = result.docID;
@@ -75,7 +75,7 @@ const GenerateQrCode = () => {
       setLoading(false)
       // history.push(forwardlink);
     }else{
-      setAlert(message);
+      setAlert(result.message);
     }
   }
 

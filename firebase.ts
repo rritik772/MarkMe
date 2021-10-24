@@ -12,6 +12,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_APP_APPID
 };
 
+// @ts-ignore
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore();
 export const auth = getAuth();
