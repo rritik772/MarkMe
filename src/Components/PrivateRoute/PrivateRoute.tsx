@@ -13,8 +13,6 @@ const PrivateRoute: React.FC<IPrivateRoute> = ({ comp: Component, ...rest }): JS
   if ( currentUser )
     console.log( "User logged in: ", currentUser.email )
 
-  console.log( Component )
-
   return (
     <Route {...rest} render={ props => {
       return currentUser? React.createElement(Component, props) : <Redirect to="/"/>

@@ -1,6 +1,9 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore"
+import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore"
 import { firestore } from "../../firebase"
+import { Status } from "../Components/Attendance/InterfaceAttendee"
 import { Message } from "../Components/Message/MessageBox"
+import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting"
+import { IUserDetails } from "./UserContext"
 
 export interface IQrCode {
   meeting_id: string,
@@ -47,5 +50,24 @@ export const createQrCode = async (qrCodeDetails: IQrCode): Promise<ICreateQrCod
       };
 
       return result;
+    })
+}
+
+export const markStudent = async ( meetingDetails: InterfaceMeeting, userDetails: IUserDetails, status: Status): Promise<Message> => {
+  console.log( userDetails, status, status === 1, status == 1, status === 2, status == 2 )
+  return await setDoc(doc(doc(firestore, "attendance", meetingDetails.ref), meetingDetails.ref, userDetails.uid), {
+    full_name: userDetails.full_name,
+    email_id: userDetails.email,
+    meeting_id: meetingDetails.meeting_id,
+    status: status,
+    unique_id: userDetails.unique_id,
+    university: userDetails.university
+  })
+    .then(() => {
+      if ( status === 2 ) return new Message(2, "Marked present successfully")
+      else return new Message(2, "Marked absent successfully")
+    })
+    .catch(() => {
+      return new Message(0, "Something went wrong.")
     })
 }

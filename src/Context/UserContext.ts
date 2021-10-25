@@ -1,15 +1,33 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { ref, set } from "firebase/database";
 import { Message } from "../Components/Message/MessageBox";
 import { auth, firestore } from "./../../firebase"
 
 export interface ISignup {
-  email: string,
-  password: string,
-  unique_id: string,
-  university: string,
+  email: string;
+  password: string;
+  unique_id: string;
+  university: string;
   full_name: string
+}
+
+export interface IUserDetails {
+  uid: string;
+  full_name: string
+  unique_id: string;
+  email_id: string;
+  meeting_id: string;
+  university: string;
+}
+
+export const IUserDetailsDefault: IUserDetails = {
+  full_name: "NA",
+  unique_id: "NA",
+  email_id: "NA",
+  status: "NA",
+  meeting_id: "NA",
+  university: "NA"
 }
 
 ////
@@ -74,3 +92,21 @@ export const logout = async (): Promise<Message> => {
 }
 //-----------------------------------------------------------------------
 ////
+
+//// --------------------------------------------------------------------
+/// ---------------------------------------------------------------------
+
+////
+// get user details
+export const getUserDetails = async ( userId: string ): Promise<IUserDetails> => {
+  const docSnap = await getDoc(doc( firestore, "users", userId ))
+
+  if ( docSnap.exists() ){
+    console.log("User retrived", docSnap.data())
+    return docSnap.data()
+  }else {
+    console.log("Error getting user")
+    return IUserDetailsDefault
+  }
+}
+// ----------------------------------------------------------------------

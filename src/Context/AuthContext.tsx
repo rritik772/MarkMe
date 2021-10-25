@@ -5,8 +5,10 @@ import Loading from "../Components/Loading/Loading";
 import useToggle from "../Library/useToggle"
 import { Message } from "../Components/Message/MessageBox";
 import { auth } from "./../../firebase";
-import { createQrCode, ICreateQrCode, IQrCode } from "./QRCodeContext";
-import { ISignup, login, logout, signup } from "./UserContext";
+import { createQrCode, ICreateQrCode, IQrCode, markStudent } from "./QRCodeContext";
+import { ISignup, login, logout, signup, IUserDetails, getUserDetails } from "./UserContext";
+import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting";
+import { Status } from "../Components/Attendance/InterfaceAttendee";
 
 ////
 // Context types
@@ -16,7 +18,8 @@ export interface AuthContextType {
     SignUp: undefined | ((signupDetails: ISignup) => Promise<Message>);
     Login: undefined  | ((email: string, password: string) => Promise<Message>);
     Logout: undefined | (() => Promise<Message>);
-    createqrcode: undefined | ((qrCodeDetails: IQrCode) => Promise<ICreateQrCode>);
+    CreateQrCode: undefined | ((qrCodeDetails: IQrCode) => Promise<ICreateQrCode>);
+    GetUserDetails: undefined | ((user_id: string) => Promise<IUserDetails>);
 }
 
 const AuthContextTypeDefault: AuthContextType =  {
@@ -25,7 +28,8 @@ const AuthContextTypeDefault: AuthContextType =  {
     SignUp: undefined,
     Login: undefined,
     Logout: undefined,
-    createqrcode: undefined,
+    CreateQrCode: undefined,
+    GetUserDetails: undefined
 }
 
 // -----------------------------------------------------
@@ -55,6 +59,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         return await logout();
     }
 
+    async function GetUserDetails(userId: string): Promise<IUserDetails> {
+        return await getUserDetails(userId)
+    }
+
     useEffect(() => {
         setLoading(false);
 
@@ -68,13 +76,16 @@ export const AuthProvider: React.FC = ({ children }) => {
         return unsubscriber;
     }, [])
 
-
     // ----------------------------------------------------------------
 
     ////
     // QR Code
     const createqrcode = async (qrCodeDetails: IQrCode): Promise<ICreateQrCode> => {
         return await createQrCode(qrCodeDetails)
+    }
+
+    const MarkStudent = async (meetingDetails: InterfaceMeeting, userDetails: IUserDetails, status: Status): Promise<Message> => {
+        return await markStudent(meetingDetails, userDetails, status);
     }
     // -----------------------------------------------------------------
 
@@ -84,7 +95,9 @@ export const AuthProvider: React.FC = ({ children }) => {
         SignUp,
         Login,
         Logout,
-        createqrcode
+        createqrcode,
+        GetUserDetails,
+        MarkStudent
      }
 
     if ( loading ) return <Loading/>
