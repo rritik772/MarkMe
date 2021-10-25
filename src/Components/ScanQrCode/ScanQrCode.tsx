@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import QrReader from 'react-qr-reader'
 import { Link } from "react-router-dom";
 import { ArrowCircleLeftIcon } from "@heroicons/react/outline";
@@ -9,11 +9,28 @@ import MessageBox, { Message } from '../Message/MessageBox';
 import MeetingInfo from './Meeting_Info';
 import InterfaceMeeting from "./InterfaceMeeting";
 import Loading from '../Loading/Loading';
+import { useAuth } from '../../Context/AuthContext';
+import { IUserDetails, IUserDetailsDefault } from '../../Context/UserContext';
 
 const ScanQrCode = () => {
   const [ alert, setAlert ] = useState<Message | null>();
   const [ scannedData, setScannedData ] = useState<InterfaceMeeting | undefined>();
   const [ toggleCamera, setToggleCamera ] = useToggle(true);
+
+  const { currentUser, MarkStudent, GetUserDetails } = useAuth();
+
+  let userDetail: IUserDetails = useMemo(async () => {
+    return await GetUserDetails!!(currentUser!!.uid)
+  }, [ currentUser ])
+
+  const onHandleMarkStudent = async ( status: number ) => {
+    if ( scannedData ){
+      const response: Message = await MarkStudent!!(scannedData, await userDetail, status)
+
+      setAlert(response)
+    } else
+      setAlert(0, "Something went wrong.")
+  }
 
   const handleScanningResult = (value: string) => {
     setScannedData(undefined);
@@ -21,7 +38,7 @@ const ScanQrCode = () => {
       try {
         const data: InterfaceMeeting = JSON.parse(value);
 
-        if (data.meeting_id == undefined || data.host_email_id == undefined || data.topic == undefined) throw "Invalid QRcode";
+        if (data.meeting_id == undefined || data.host_email_id == undefined || data.topic == undefined || data.ref === undefined) throw "Invalid QRcode";
 
         setScannedData(data);
         setToggleCamera();
@@ -60,8 +77,8 @@ const ScanQrCode = () => {
         (scannedData) &&
           <main className="md:w-1/2 lg:w-5/12 xl:w-4/12 mx-auto mt-5 p-5 space-y-5 bg-white shadow-md hover:shadow-xl duration-300">
             <div className="flex space-x-4">
-              <button className="w-full py-2 rounded-md bg-teal-500 text-white font-plex-sans-medium transition duration-300 hover:bg-teal-600 hover:shadow-lg" onClick={() => {setAlert(null); setToggleCamera()}}>Mark Present</button>
-              <button className="w-full py-2 rounded-md bg-yellow-400 text-black font-plex-sans-medium transition duration-300 hover:bg-yellow-500 hover:shadow-lg" onClick={() => setToggleCamera()}>Mark Leave</button>
+              <button className="w-full py-2 rounded-md bg-teal-500 text-white font-plex-sans-medium transition duration-300 hover:bg-teal-600 hover:shadow-lg" onClick={() => {setAlert(null); onHandleMarkStudent(2)}}>Mark Present</button>
+              <button className="w-full py-2 rounded-md bg-yellow-400 text-black font-plex-sans-medium transition duration-300 hover:bg-yellow-500 hover:shadow-lg" onClick={() => { setAlert(null); onHandleMarkStudent(1) }}>Mark Leave</button>
             </div>
           </main>
       }
