@@ -5,7 +5,7 @@ import { sha256 } from "js-sha256";
 import MessageBox, { Message } from "../Message/MessageBox";
 import { useAuth } from "../../Context/AuthContext";
 import { Redirect, useHistory } from "react-router-dom";
-import { ISignup } from "../../Context/UserContext";
+import { ISignUp } from "../../Modal/UserModal";
 
 function SignUp() {
   const [ email, setEmail ]           = useState<string>('');
@@ -50,7 +50,7 @@ function SignUp() {
       return;
     }else {
       const hashedPass = sha256(password1)
-      const signupDetails: ISignup = {
+      const signupDetails: ISignUp = {
         email: email,
         full_name: fullName,
         unique_id: uniqueID,

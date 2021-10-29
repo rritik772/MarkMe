@@ -1,12 +1,11 @@
 export enum Status {
-  Leave = 1,
-  Absent = 2,
-  Present = 3
+  Absent = 1,
+  Present = 2
 };
 
 export interface IAttendee {
   id: number,
-  name: string,
+  full_name: string,
   university: string,
   meeting_id: string,
   email_id: string,

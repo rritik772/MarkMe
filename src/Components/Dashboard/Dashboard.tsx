@@ -6,7 +6,7 @@ import { useAuth } from "../../Context/AuthContext";
 import { useEffect } from "react";
 
 const Dashboard = (): JSX.Element => {
-  const { currentUser, GetUserDetails } = useAuth();
+  const { currentUser, GetUserAttandance } = useAuth();
 
   return (
     <>

@@ -5,7 +5,7 @@ import useToggle from "../../Library/useToggle";
 import AddStudent from "../AddStudent/AddStudent";
 import RemoveStudent from "../RemoveStudent/RemoveStudent";
 import SearchStudent from "../SearchStudent/SearchStudent";
-import Attendee from "./Attendee";
+import AttendeeIterator from "./AttendeeIterator";
 
 const Attendees = (): JSX.Element => {
   const { docRef } = useParams<{ docRef: string }>();
@@ -24,7 +24,7 @@ const Attendees = (): JSX.Element => {
         </section>
         <main className="container flex flex-col md:flex-row mx-auto md:space-x-8 items-start">
           <section className="flex-grow w-full p-5 rounded-md space-y-2 bg-sky-200 md:border-4 border-sky-500">
-            <Attendee/>
+            <AttendeeIterator docRef={ docRef }/>
           </section>
           <nav className="md:flex-none w-full md:w-3/12 order-first md:order-last space-y-5">
             <div className="flex flex-col p-5 rounded-md space-y-4 bg-sky-200 md:border-4 border-sky-500">

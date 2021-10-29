@@ -8,6 +8,7 @@ import Loading from "../Loading/Loading";
 import { ICreateQrCode, IQrCode } from "../../Context/QRCodeContext";
 import { useAuth } from "../../Context/AuthContext";
 import { Message } from "../Message/MessageBox";
+import { QRCodeModal } from "../../Modal/QRCodeModal";
 
 const GenerateQrCode = () => {
   const [ meetingID, setMeetingID ] = useState<string>('');
@@ -21,6 +22,7 @@ const GenerateQrCode = () => {
   const [ loading, setLoading ] = useState<boolean>(true);
 
   const { currentUser, createqrcode } = useAuth();
+  const { uid } = currentUser!!;
   const history = useHistory();
 
   const qrString = ( doc_id: string ) => {
@@ -47,20 +49,19 @@ const GenerateQrCode = () => {
   const handleWritingQrCode = async (e: React.FormEvent)=> {
     e.preventDefault();
 
-    const { uid } = currentUser!!;
 
     const datetimestamp = new Date();
     const [ datestamp, timestamp ] = datetimestamp.toLocaleString().split(", ")
 
-    const qrCodeDetails: IQrCode = {
-      meeting_id: meetingID,
-      host_email_id: hostEmailID,
-      topic: topic,
-      uid: uid,
-      datestamp: datestamp,
-      timestamp: timestamp,
-      destroyed: false
-    }
+    const qrCodeDetails: QRCodeModal = new QRCodeModal (
+      datestamp,
+      false,
+      hostEmailID,
+      meetingID,
+      timestamp,
+      topic,
+      uid
+    );
 
     const result: ICreateQrCode = await createqrcode!!(qrCodeDetails)
 

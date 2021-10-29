@@ -3,48 +3,27 @@ import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { ref, set } from "firebase/database";
 import { Message } from "../Components/Message/MessageBox";
 import { auth, firestore } from "./../../firebase"
-
-export interface ISignup {
-  email: string;
-  password: string;
-  unique_id: string;
-  university: string;
-  full_name: string
-}
-
-export interface IUserDetails {
-  uid: string;
-  full_name: string
-  unique_id: string;
-  email_id: string;
-  meeting_id: string;
-  university: string;
-}
-
-export const IUserDetailsDefault: IUserDetails = {
-  full_name: "NA",
-  unique_id: "NA",
-  email_id: "NA",
-  status: "NA",
-  meeting_id: "NA",
-  university: "NA"
-}
+import UserModal, { ISignUp, UserModalConverter } from "../Modal/UserModal";
 
 ////
 // create users and its infomation
-export const signup = async (signupDetails: ISignup): Promise<Message> => {
-  return await createUserWithEmailAndPassword(auth, signupDetails.email, signupDetails.password)
+export const signup = async ( signupDetails: ISignUp ): Promise<Message> => {
+  return await createUserWithEmailAndPassword( auth,
+                                               signupDetails.userModel.email,
+                                               signupDetails.userModel.password )
     .then(async (userCredential): Promise<Message> => {
       const { user }  = userCredential;
       const user_id = user.uid;
 
-      return await setDoc(doc(firestore, "users", user_id), {
-        uid: user_id,
-        email: signupDetails.email,
-        full_name: signupDetails.full_name,
-        unique_id: signupDetails.unique_id,
-        university: signupDetails.university
-      })
+      const ref = doc(firestore, "users", user_id).withConverter( UserModalConverter );
+
+      return await setDoc(ref, new UserModal (
+        uid =  user_id,
+        email = signupDetails.email,
+        full_name = signupDetails.full_name,
+        unique_id = signupDetails.unique_id,
+        university = signupDetails.university
+      ))
         .then((): Message => {
           console.log("Document written succefully")
           return new Message(2, "Account created Successfully")
@@ -98,15 +77,13 @@ export const logout = async (): Promise<Message> => {
 
 ////
 // get user details
-export const getUserDetails = async ( userId: string ): Promise<IUserDetails> => {
-  const docSnap = await getDoc(doc( firestore, "users", userId ))
+export const getUserDetails = async ( userId: string ): UserModal => {
+  const docSnap = await getDoc( doc( firestore, "users", userId ).withConverter(UserModalConverter) )
 
   if ( docSnap.exists() ){
-    console.log("User retrived", docSnap.data())
     return docSnap.data()
   }else {
     console.log("Error getting user")
-    return IUserDetailsDefault
   }
 }
 // ----------------------------------------------------------------------
