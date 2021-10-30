@@ -28,7 +28,6 @@ interface IMessageBox {
 const MessageBox:React.FC<IMessageBox> =  ({ message }): JSX.Element  => {
 
   if ( message == undefined ) return <></>;
-  console.log(message.messageType)
 
   let messageColor =
       (message.messageType == 0)? 'bg-red-300' :

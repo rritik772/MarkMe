@@ -6,7 +6,11 @@ import { useAuth } from "../../Context/AuthContext";
 import { useEffect } from "react";
 
 const Dashboard = (): JSX.Element => {
-  const { currentUser, GetUserDetails } = useAuth();
+  const { currentUser, BarcodeExist } = useAuth();
+
+  useEffect(() => {
+    BarcodeExist("sdfS6DRg6kTo4FVtpGm5kZu")
+  }, [])
 
   return (
     <>

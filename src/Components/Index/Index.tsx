@@ -15,6 +15,9 @@ import AboutMe from "../Contact/AboutMe";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import { AuthProvider } from "../../Context/AuthContext";
 import Nav from "../Nav/Nav";
+import Profile from "../Profile/Profile";
+import TakenAttendance from "../Profile/TakenAttendance/TakenAttendance";
+import MyAttendance from "../Profile/MyAttendance/MyAttendance";
 
 function Index() {
 
@@ -34,6 +37,9 @@ function Index() {
               <PrivateRoute exact path="/dashboard/qrCodeGenerate/attendees/:docRef" comp={Attendees}/>
               <PrivateRoute exact path="/dashboard/leave" comp={Leave}/>
               <PrivateRoute exact path="/dashboard/scanQrCode" comp={ScanQrCode}/>
+              <PrivateRoute exact path="/dashboard/profile" comp={Profile}/>
+              <PrivateRoute exact path="/dashboard/profile/myAttendance" comp={MyAttendance}/>
+              <PrivateRoute exact path="/dashboard/profile/takenAttendance" comp={TakenAttendance}/>
               <Route component={Error}/>
             </Switch>
           </AuthProvider>
