@@ -19,7 +19,7 @@ const ScanQrCode = () => {
   const [ toggleCamera, setToggleCamera ] = useToggle(true);
   const [ userDetail, setUserDetail ] = useState<UserModal | undefined>( undefined );
 
-  const { currentUser, MarkStudent, GetUserDetails } = useAuth();
+  const { currentUser, MarkStudent, GetUserDetails, BarcodeExist } = useAuth();
 
   let userDetailGetter = useMemo(async () => {
     const response = await GetUserDetails!!(currentUser!!.uid)
@@ -30,6 +30,9 @@ const ScanQrCode = () => {
 
   const onHandleMarkStudent = async ( status: number ) => {
     if ( scannedData ){
+      const datetimestamp = new Date();
+      const [ datestamp, timestamp ] = datetimestamp.toLocaleString().split(", ")
+
       const attendeeModal: AttendeeModal = new AttendeeModal(
         currentUser!!.email,
         userDetail.full_name,
@@ -37,12 +40,15 @@ const ScanQrCode = () => {
         status,
         userDetail.unique_id,
         userDetail.university,
-        userDetail.uid
+        userDetail.uid,
+        datestamp,
+        timestamp
       );
 
       const response: Message = await MarkStudent!!(scannedData.ref, attendeeModal)
 
       setAlert(response)
+      setScannedData(undefined)
     } else
       setAlert(0, "Something went wrong.")
   }
@@ -55,8 +61,16 @@ const ScanQrCode = () => {
 
         if (data.meeting_id == undefined || data.host_email_id == undefined || data.topic == undefined || data.ref === undefined) throw "Invalid QRcode";
 
-        setScannedData(data);
-        setToggleCamera();
+        BarcodeExist!!(data.ref)
+          .then(message => {
+            if(message.messageType === 0){
+              setAlert(message)
+              return;
+            }
+
+            setScannedData(data);
+            setToggleCamera();
+          })
       }catch(error) {
         setAlert(new Message(0, "Somethin went wrong!"));
         setToggleCamera();

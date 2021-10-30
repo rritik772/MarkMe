@@ -5,7 +5,7 @@ import { sha256 } from "js-sha256";
 import MessageBox, { Message } from "../Message/MessageBox";
 import { useAuth } from "../../Context/AuthContext";
 import { Redirect, useHistory } from "react-router-dom";
-import { ISignUp } from "../../Modal/UserModal";
+import UserModal, { ISignUp } from "../../Modal/UserModal";
 
 function SignUp() {
   const [ email, setEmail ]           = useState<string>('');
@@ -51,11 +51,14 @@ function SignUp() {
     }else {
       const hashedPass = sha256(password1)
       const signupDetails: ISignUp = {
-        email: email,
-        full_name: fullName,
-        unique_id: uniqueID,
-        university: university,
-        password: hashedPass
+        password: hashedPass,
+        userModal: new UserModal(
+          uniqueID,
+          email,
+          fullName,
+          "NA",
+          university,
+        )
       };
 
       const message: Message = await SignUp!!(signupDetails);

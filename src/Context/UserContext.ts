@@ -3,14 +3,14 @@ import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { ref, set } from "firebase/database";
 import { Message } from "../Components/Message/MessageBox";
 import { auth, firestore } from "./../../firebase"
-import UserModal, { ISignUp, UserModalConverter } from "../Modal/UserModal";
+import UserModal, { ISignUp, UserModalConverter, UserModalDefault } from "../Modal/UserModal";
 
 ////
 // create users and its infomation
 export const signup = async ( signupDetails: ISignUp ): Promise<Message> => {
   return await createUserWithEmailAndPassword( auth,
-                                               signupDetails.userModel.email,
-                                               signupDetails.userModel.password )
+                                               signupDetails.userModal.email,
+                                               signupDetails.password )
     .then(async (userCredential): Promise<Message> => {
       const { user }  = userCredential;
       const user_id = user.uid;
@@ -18,11 +18,11 @@ export const signup = async ( signupDetails: ISignUp ): Promise<Message> => {
       const ref = doc(firestore, "users", user_id).withConverter( UserModalConverter );
 
       return await setDoc(ref, new UserModal (
-        uid =  user_id,
-        email = signupDetails.email,
-        full_name = signupDetails.full_name,
-        unique_id = signupDetails.unique_id,
-        university = signupDetails.university
+        signupDetails.userModal.unique_id,
+        signupDetails.userModal.email,
+        signupDetails.userModal.full_name,
+        user_id,
+        signupDetails.userModal.university
       ))
         .then((): Message => {
           console.log("Document written succefully")
@@ -77,13 +77,13 @@ export const logout = async (): Promise<Message> => {
 
 ////
 // get user details
-export const getUserDetails = async ( userId: string ): UserModal => {
+export const getUserDetails = async ( userId: string ): Promise<UserModal> => {
   const docSnap = await getDoc( doc( firestore, "users", userId ).withConverter(UserModalConverter) )
 
   if ( docSnap.exists() ){
     return docSnap.data()
-  }else {
-    console.log("Error getting user")
   }
+  console.log("Error getting user")
+  return UserModalDefault
 }
 // ----------------------------------------------------------------------

@@ -1,12 +1,11 @@
 import { Unsubscribe } from "firebase/auth"
-import { addDoc, collection, collectionGroup, doc, DocumentData, FieldValue, getDoc, getDocs, increment, onSnapshot, query, QuerySnapshot, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore"
+import { addDoc, collection, collectionGroup, deleteDoc, doc, DocumentData, FieldValue, getDoc, getDocs, increment, onSnapshot, query, QuerySnapshot, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore"
 import { firestore } from "../../firebase"
 import { Status } from "../Components/Attendance/InterfaceAttendee"
 import { Message } from "../Components/Message/MessageBox"
 import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting"
 import { AttendeeModal, AttendeeModalConverter } from "../Modal/AttendeeModal"
 import { QRCodeModal, QRCodeModalConverter } from "../Modal/QRCodeModal"
-import { IUserDetails } from "./UserContext"
 
 export interface IQrCode {
   meeting_id: string,
@@ -81,10 +80,9 @@ export const markStudent = async ( docRef: string, attendeeModal: AttendeeModal 
     })
 }
 
-export const getStudentsWithDocRef = async ( docRef: string ): AttendeeModal[] =>
+export const getStudentsWithDocRef = async ( docRef: string ): Promise<AttendeeModal[]> =>
 {
-  const attendanceref = doc(firestore, "attendance", docRef);
-  const userattendanceref = collection(attendanceref, "students");
+  const userattendanceref = collection(firestore, `attendance/${docRef}/students`).withConverter(AttendeeModalConverter)
 
   const q = query( userattendanceref )
   const documents = await getDocs(q);
@@ -113,9 +111,9 @@ export const getBarcodesByUser = async ( uid: string ): Promise<string[]> =>
 ////
 // all the meeting user has given attendance
 export const getUserAttendance = async ( uid: string ): Promise<AttendeeModal[]> =>{
-  let result: AttendeeModal = [];
+  let result: AttendeeModal[] = [];
 
-  const attendanceRef = collectionGroup(firestore, "students");
+  const attendanceRef = collectionGroup(firestore, "students").withConverter(AttendeeModalConverter);
   const q = query(attendanceRef, where("uid", "==", uid));
 
   const querySnapshot = await getDocs(q)
@@ -124,3 +122,32 @@ export const getUserAttendance = async ( uid: string ): Promise<AttendeeModal[]>
   return result
 }
 // --------------------------------------------------------------------------------------------
+
+////
+// Get Barcode data
+export const getBarcodeData = async ( docRef: string ): Promise<QRCodeModal> => {
+  const qrcode = doc(firestore, `qrcode/${docRef}`).withConverter(QRCodeModalConverter);
+  const q = query(qrcode)
+
+  const querySnapshot = await getDoc(q);
+  return querySnapshot.data();
+}
+// --------------------------------------------------------------------------------------------
+
+////
+// Destroy QRCode
+export const destroyQRCode = async ( docRef: string ): Promise<Message> => {
+  await deleteDoc(doc(firestore, "qrcode", docRef))
+  return new Message(0, "Barcode destoryed")
+}
+// --------------------------------------------------------------------------------------------
+
+////
+// Barcode document exist
+export const barcodeExist = async ( docRef: string ): Promise<Message> => {
+  const document = await getDoc(doc(firestore, `qrcode/${docRef}`));
+  if ( document.exists() ){
+    return new Message(2, "Valid QRcode");
+  }
+  return new Message(0, "Invalid QRcode");
+}

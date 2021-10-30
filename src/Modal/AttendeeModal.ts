@@ -1,4 +1,17 @@
+import { DocumentData, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
+
 export class AttendeeModal {
+
+  email_id: string;
+  full_name: string;
+  meeting_id: string;
+  status: number;
+  unique_id: string;
+  university: string;
+  uid: string;
+  datestamp: string;
+  timestamp: string;
+
   constructor(
     email_id: string,
     full_name: string,
@@ -6,7 +19,9 @@ export class AttendeeModal {
     status: number,
     unique_id: string,
     university: string,
-    uid: string
+    uid: string,
+    datestamp: string,
+    timestamp: string
   ) {
     this.email_id = email_id;
     this.full_name = full_name;
@@ -15,6 +30,8 @@ export class AttendeeModal {
     this.unique_id = unique_id;
     this.university = university;
     this.uid = uid;
+    this.timestamp = timestamp;
+    this.datestamp = datestamp;
   }
 
   toString() {
@@ -25,13 +42,15 @@ export class AttendeeModal {
         + this.status + " "
         + this.unique_id + " "
         + this.university + " "
-        + this.uid
+        + this.uid + " "
+        + this.datestamp + " "
+        + this.timestamp + " "
     );
   }
 }
 
 export const AttendeeModalConverter = {
-  toFirestore: ( attendeeModal ) => {
+  toFirestore( attendeeModal:AttendeeModal ):DocumentData {
     return {
         email_id : attendeeModal.email_id,
         full_name : attendeeModal.full_name,
@@ -39,10 +58,12 @@ export const AttendeeModalConverter = {
         status : attendeeModal.status,
         unique_id : attendeeModal.unique_id,
         university : attendeeModal.university,
-        uid : attendeeModal.uid
+        uid : attendeeModal.uid,
+        datestamp: attendeeModal.datestamp,
+        timestamp: attendeeModal.timestamp
     }
   },
-  fromFirestore: ( snapshot, options ) => {
+  fromFirestore( snapshot: QueryDocumentSnapshot, options: SnapshotOptions ): AttendeeModal {
     const data = snapshot.data(options);
     return new AttendeeModal(
         data.email_id,
@@ -51,7 +72,9 @@ export const AttendeeModalConverter = {
         data.status,
         data.unique_id,
         data.university,
-        data.uid
+        data.uid,
+        data.datestamp,
+        data.timestamp
     );
   }
 }

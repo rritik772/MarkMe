@@ -37,7 +37,7 @@ const MyAttendance = () => {
       {
         userAllAttendance.map(item => (
           <div key={item.meeting_id} className="shadow-md rounded-md">
-            <SingleAttendee Information={item}/>
+            <SingleAttandance Information={item}/>
           </div>
         ))
       }
@@ -45,7 +45,10 @@ const MyAttendance = () => {
   )
 }
 
-const singleAttandance = ({ Information }) => {
+const SingleAttandance = ({ Information }) => {
+
+  const [ isClicked, setIsClicked ] = useState<boolean>()
+
   return (
     <button
       className=
@@ -64,12 +67,12 @@ const singleAttandance = ({ Information }) => {
       <section className="flex space-x-4 justify-between overflow-auto">
         <div className="flex space-x-5 items-center">
           <EmojiHappyIcon className="h-8"/>
-          <span className="text-lg font-plex-sans-medium truncate">{Information.full_name}</span>
+          <span className="text-lg font-plex-sans-medium truncate">{Information.meeting_id}</span>
         </div>
         {
           (!isClicked) &&
             <div className="flex space-x-5 items-center">
-              <span className="truncate">{Information.email_id}</span>
+              <span className="truncate">{Information.timestamp}</span>
             </div>
         }
       </section>

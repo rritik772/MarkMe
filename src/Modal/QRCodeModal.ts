@@ -1,4 +1,15 @@
+import { DocumentData, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
+
 export class QRCodeModal {
+
+  datestamp: string;
+  destroyed: boolean;
+  host_email_id: string;
+  meeting_id: string;
+  timestamp: string;
+  topic: string;
+  uid: string;
+
   constructor
   (
     datestamp: string,
@@ -33,7 +44,7 @@ export class QRCodeModal {
 }
 
 export const QRCodeModalConverter = {
-  toFirestore: ( qrCodeModal ) => {
+  toFirestore ( qrCodeModal: QRCodeModal ): DocumentData {
     return {
       datestamp: qrCodeModal.datestamp,
       destroyed: qrCodeModal.destroyed,
@@ -44,16 +55,16 @@ export const QRCodeModalConverter = {
       uid: qrCodeModal.uid
     }
   },
-  fromFirestore: ( snapshot, options ) => {
+  fromFirestore( snapshot: QueryDocumentSnapshot, options: SnapshotOptions ): QRCodeModal {
     const data = snapshot.data( options );
     return new QRCodeModal(
-        datestamp = data.datestamp,
-        destroyed = data.destroyed,
-        host_email_id = data.host_email_id,
-        meeting_id = data.meeting_id,
-        timestamp = data.timestamp,
-        topic = data.topic,
-        uid = data.uid
+        data.datestamp,
+        data.destroyed,
+        data.host_email_id,
+        data.meeting_id,
+        data.timestamp,
+        data.topic,
+        data.uid
     )
   }
 }

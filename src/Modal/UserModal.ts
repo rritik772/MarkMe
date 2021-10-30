@@ -1,4 +1,11 @@
+import { DocumentData, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
+
 export default class UserModal {
+  unique_id: string;
+  email: string;
+  full_name: string;
+  uid: string;
+  university: string;
   constructor( unique_id: string, email: string, full_name: string, uid: string, university: string ){
     this.full_name = full_name;
     this.email = email;
@@ -12,17 +19,19 @@ export default class UserModal {
   }
 }
 
+export const UserModalDefault = new UserModal( "NA", "NA", "NA", "NA", "NA" )
+
 export const UserModalConverter = {
-  toFirestore: ( userModel ) => {
+  toFirestore( userModal: UserModal ): DocumentData {
     return {
-        uid: userModel.uid,
-        email: userModel.email,
-        full_name: userModel.full_name,
-        unique_id: userModel.unique_id,
-        university: userModel.university
+        uid: userModal.uid,
+        email: userModal.email,
+        full_name: userModal.full_name,
+        unique_id: userModal.unique_id,
+        university: userModal.university
     }
   },
-  fromFirestore: (snapshot, options) => {
+  fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions): UserModal => {
     const data = snapshot.data(options);
     return new UserModal(
       data.unique_id,
@@ -36,5 +45,5 @@ export const UserModalConverter = {
 
 export interface ISignUp {
   password: string;
-  userModel: UserModal
+  userModal: UserModal
 }

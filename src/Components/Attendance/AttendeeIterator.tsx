@@ -8,12 +8,17 @@ import useToggle from "../../Library/useToggle";
 import { LoadBundleTask } from "firebase/firestore";
 import Loading from "../Loading/Loading";
 
+interface IAttendeeIterator {
+  docRef: string;
+  reFetch: number;
+}
+
 interface ISingleAttendee {
   Information: IAttendee;
   key: number
 };
 
-const AttendeeIterator: React.FC<{ docRef: string }> = ({ docRef }): JSX.Element => {
+const AttendeeIterator: React.FC<IAttendeeIterator> = ({ docRef, reFetch }): JSX.Element => {
   const [ attendees, setAttendees ] = useState([]);
   const [ loading, setLoading ] = useState<boolean>();
 
@@ -28,7 +33,7 @@ const AttendeeIterator: React.FC<{ docRef: string }> = ({ docRef }): JSX.Element
     }
 
     getAttendeesFromFirebase();
-  }, [])
+  }, [ reFetch ])
 
     return (
     <div className="space-y-3">

@@ -30,6 +30,14 @@ const AttendeeInformation: React.FC<AttendeeModal> = ({ attendeeInfo }): JSX.Ele
           <span className="font-plex-sans-medium truncate">{ attendeeInfo.university }</span>
         </section>
         <section className="w-full grid grid-cols-2 justify-item-start rounded-md bg-transparent">
+          <span className="font-plex-sans">Date</span>
+          <span className="font-plex-sans-medium truncate">{ attendeeInfo.datestamp }</span>
+        </section>
+        <section className="w-full grid grid-cols-2 justify-item-start rounded-md bg-transparent">
+          <span className="font-plex-sans">Time</span>
+          <span className="font-plex-sans-medium truncate">{ attendeeInfo.timestamp }</span>
+        </section>
+        <section className="w-full grid grid-cols-2 justify-item-start rounded-md bg-transparent">
           <span className="font-plex-sans">Status</span>
           <span className="font-plex-sans-medium truncate">{ status }</span>
         </section>

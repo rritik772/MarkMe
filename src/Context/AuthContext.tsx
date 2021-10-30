@@ -5,13 +5,14 @@ import Loading from "../Components/Loading/Loading";
 import useToggle from "../Library/useToggle"
 import { Message } from "../Components/Message/MessageBox";
 import { auth } from "./../../firebase";
-import { createQrCode, getStudentswithDocRef, ICreateQrCode, IQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance } from "./QRCodeContext";
+import { createQrCode, ICreateQrCode, IQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist } from "./QRCodeContext";
 import { login, logout, signup, getUserDetails } from "./UserContext";
 import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting";
 import { Status } from "../Components/Attendance/InterfaceAttendee";
 import { DocumentData, QuerySnapshot } from "firebase/firestore";
 import UserModal, { ISignUp } from "../Modal/UserModal";
 import { AttendeeModal } from "../Modal/AttendeeModal";
+import { QRCodeModal } from "../Modal/QRCodeModal";
 
 ////
 // Context types
@@ -23,10 +24,13 @@ export interface AuthContextType {
     Logout: undefined | (() => Promise<Message>);
     CreateQrCode: undefined | ((qrCodeDetails: IQrCode) => Promise<ICreateQrCode>);
     GetUserDetails: undefined | ((user_id: string) => Promise<UserModal>);
-    MarkStudent: undefined | ((meetingDetails: InterfaceMeeting, userDetails: IUserDetails, status: Status) => Promise<Message>);
+    MarkStudent: undefined | ((docRef: string, attendeeModal: AttendeeModal) => Promise<Message>);
     GetStudentsWithDocRef: undefined | ((docRef: string) => Promise<DocumentData[]>);
-    GetBarcodesByUser: undefined | (( uid: stirng ) => Promise<string[]>);
-    GetUserAttendance: undefined | (( uid: string ) => Promist<AttendeeModal[]>);
+    GetBarcodesByUser: undefined | (( uid: string ) => Promise<string[]>);
+    GetUserAttendance: undefined | (( uid: string ) => Promise<AttendeeModal[]>);
+    GetBarcodeData: undefined | ((docRef: string) => Promise<QRCodeModal>);
+    DestoryBarcode: undefined | ((docRef: string) => Promise<Message>);
+    BarcodeExist: undefined | ((docRef: string) => Promise<Message>);
 }
 
 const AuthContextTypeDefault: AuthContextType =  {
@@ -40,7 +44,10 @@ const AuthContextTypeDefault: AuthContextType =  {
     MarkStudent: undefined,
     GetStudentsWithDocRef: undefined,
     GetBarcodesByUser: undefined,
-    GetUserAttendance: undefined
+    GetUserAttendance: undefined,
+    GetBarcodeData: undefined,
+    DestoryBarcode: undefined,
+    BarcodeExist: undefined
 }
 
 // -----------------------------------------------------
@@ -70,8 +77,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         return await logout();
     }
 
-    function GetUserDetails(userId: string): UserModal {
-        return getUserDetails(userId)
+    async function GetUserDetails(userId: string): Promise<UserModal> {
+        return await getUserDetails(userId)
     }
 
     useEffect(() => {
@@ -99,7 +106,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         return await markStudent(docRef, attendeeModal);
     }
 
-    const GetStudentsWithDocRef = async ( docRef: string ): DocumentData[] => {
+    const GetStudentsWithDocRef = async ( docRef: string ): Promise<AttendeeModal[]> => {
         const data = await getStudentsWithDocRef(docRef);
         return data;
     }
@@ -112,6 +119,18 @@ export const AuthProvider: React.FC = ({ children }) => {
     const GetUserAttandance = async ( uid: string ): Promise<AttendeeModal[]> => {
         const data = await getUserAttendance(uid);
         return data
+    }
+
+    async function GetBarcodeData(docRef: string): Promise<QRCodeModal> {
+        return await getBarcodeData(docRef)
+    }
+
+    async function DestoryBarcode( docRef: string ): Promise<Message> {
+        return await destroyQRCode(docRef)
+    }
+
+    async function BarcodeExist( docRef: string ): Promise<Message> {
+        return await barcodeExist(docRef)
     }
     // -----------------------------------------------------------------
 
@@ -126,7 +145,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         MarkStudent,
         GetStudentsWithDocRef,
         GetBarcodesByUser,
-        GetUserAttandance
+        GetUserAttandance,
+        GetBarcodeData,
+        DestoryBarcode,
+        BarcodeExist
     }
 
     if ( loading ) return <Loading/>
