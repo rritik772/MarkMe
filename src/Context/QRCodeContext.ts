@@ -125,11 +125,10 @@ export const getUserAttendance = async ( uid: string ): Promise<AttendeeModal[]>
 
 ////
 // Get Barcode data
-export const getBarcodeData = async ( docRef: string ): Promise<QRCodeModal> => {
-  const qrcode = doc(firestore, `qrcode/${docRef}`).withConverter(QRCodeModalConverter);
-  const q = query(qrcode)
+export const getBarcodeData = async ( docRef: string ): Promise<QRCodeModal | undefined> => {
+  const qrcodeRef = doc(firestore, `qrcode/${docRef}`).withConverter(QRCodeModalConverter);
 
-  const querySnapshot = await getDoc(q);
+  const querySnapshot = await getDoc(qrcodeRef);
   return querySnapshot.data();
 }
 // --------------------------------------------------------------------------------------------
@@ -137,7 +136,10 @@ export const getBarcodeData = async ( docRef: string ): Promise<QRCodeModal> => 
 ////
 // Destroy QRCode
 export const destroyQRCode = async ( docRef: string ): Promise<Message> => {
-  await deleteDoc(doc(firestore, "qrcode", docRef))
+  const qrcodeRef = doc(firestore, "qrcode", docRef);
+  await updateDoc(qrcodeRef, {
+    destroyed: true
+  })
   return new Message(0, "Barcode destoryed")
 }
 // --------------------------------------------------------------------------------------------
@@ -145,9 +147,10 @@ export const destroyQRCode = async ( docRef: string ): Promise<Message> => {
 ////
 // Barcode document exist
 export const barcodeExist = async ( docRef: string ): Promise<Message> => {
-  const document = await getDoc(doc(firestore, `qrcode/${docRef}`));
-  if ( document.exists() ){
-    return new Message(2, "Valid QRcode");
+  const document = await getDoc(doc(firestore, `qrcode/${docRef}`).withConverter(QRCodeModalConverter));
+
+  if ( document.data()?.destroyed ){
+    return new Message(0, "Invalid Qr Code");
   }
-  return new Message(0, "Invalid QRcode");
+  return new Message(2, "Valid Qr Code");
 }

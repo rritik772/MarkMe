@@ -21,7 +21,7 @@ const Attendees = (): JSX.Element => {
   const [ qrCodeString, setQRCodeString ] = useState<string>();
   const [ reFetch, setReFetch ] = useState<number>(0);
   const [ destroyedAlert, setDestroyedAlert ] = useState<Message | undefined>();
-  const [ barcodeAlert, setBarcodeAlert ] = useState<Message | undefined>();
+  const [ barcodeAlert, setBarcodeAlert ] = useState<string | undefined>();
 
   const { GetBarcodeData, DestoryBarcode } = useAuth();
 
@@ -29,7 +29,7 @@ const Attendees = (): JSX.Element => {
     GetBarcodeData!!(docRef)
       .then(data => {
         if ( data === undefined ) {
-          setBarcodeAlert("No Barcode Avaliable")
+          setBarcodeAlert("No Barcode Avaliable");
           return;
         };
         const barcodeData =  {
@@ -42,7 +42,7 @@ const Attendees = (): JSX.Element => {
         const json = JSON.stringify(barcodeData);
         setQRCodeString(json);
       });
-  }, [])
+  }, [ destroyedAlert ])
 
   const handleDestroyQRCode = () => {
     DestoryBarcode!!(docRef)
@@ -67,7 +67,7 @@ const Attendees = (): JSX.Element => {
                 destroyedAlert &&
                   <div className="flex justify-between items-center rounded-md p-3 bg-red-400 font-bold font-plex-sans-medium">
                     {destroyedAlert.messageString}
-                    <div className="cursor-pointer" onClick={() => setAlert(undefined)}>&#10006;</div>
+                    <div className="cursor-pointer" onClick={() => setDestroyedAlert(undefined)}>&#10006;</div>
                   </div>
               }
               <button className="py-2 rounded-md bg-teal-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setToggleBarcode()}>Show Barcode</button>
@@ -75,7 +75,7 @@ const Attendees = (): JSX.Element => {
                 barcodeAlert &&
                   <div className="flex justify-between items-center rounded-md p-3 bg-red-400 font-bold font-plex-sans-medium">
                     {barcodeAlert}
-                    <div className="cursor-pointer" onClick={() => setAlert(undefined)}>&#10006;</div>
+                    <div className="cursor-pointer" onClick={() => setBarcodeAlert(undefined)}>&#10006;</div>
                   </div>
               }
               {

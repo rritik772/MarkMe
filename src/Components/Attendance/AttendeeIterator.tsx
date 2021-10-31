@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { EmojiHappyIcon } from "@heroicons/react/outline";
 
-import { IAttendee, Status } from "./InterfaceAttendee";
+import { Status } from "./InterfaceAttendee";
 import AttendeeInformation from "./AttendeeInformation";
 import { useAuth } from "../../Context/AuthContext";
 import useToggle from "../../Library/useToggle";
 import { LoadBundleTask } from "firebase/firestore";
 import Loading from "../Loading/Loading";
+import { AttendeeModal } from "../../Modal/AttendeeModal";
 
 interface IAttendeeIterator {
   docRef: string;
-  reFetch: number;
+  reFetch?: number;
 }
 
 interface ISingleAttendee {
-  Information: IAttendee;
+  Information: AttendeeModal;
   key: number
 };
 
 const AttendeeIterator: React.FC<IAttendeeIterator> = ({ docRef, reFetch }): JSX.Element => {
-  const [ attendees, setAttendees ] = useState([]);
+  const [ attendees, setAttendees ] = useState<AttendeeModal[]>([]);
   const [ loading, setLoading ] = useState<boolean>();
 
   const { currentUser, GetStudentsWithDocRef } = useAuth();
@@ -38,7 +39,7 @@ const AttendeeIterator: React.FC<IAttendeeIterator> = ({ docRef, reFetch }): JSX
     return (
     <div className="space-y-3">
       {
-        attendees.map((item: IAttendee, index: number) => {
+        attendees.map((item: AttendeeModal, index: number) => {
           return (
             <SingleAttendee Information={item} key={index}/>
           )

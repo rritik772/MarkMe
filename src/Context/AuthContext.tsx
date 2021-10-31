@@ -22,13 +22,13 @@ export interface AuthContextType {
     SignUp: undefined | ((signupDetails: ISignUp) => Promise<Message>);
     Login: undefined  | ((email: string, password: string) => Promise<Message>);
     Logout: undefined | (() => Promise<Message>);
-    CreateQrCode: undefined | ((qrCodeDetails: IQrCode) => Promise<ICreateQrCode>);
+    createqrcode: undefined | ((qrCodeDetails: IQrCode) => Promise<ICreateQrCode>);
     GetUserDetails: undefined | ((user_id: string) => Promise<UserModal>);
     MarkStudent: undefined | ((docRef: string, attendeeModal: AttendeeModal) => Promise<Message>);
-    GetStudentsWithDocRef: undefined | ((docRef: string) => Promise<DocumentData[]>);
+    GetStudentsWithDocRef: undefined | ((docRef: string) => Promise<AttendeeModal[]>);
     GetBarcodesByUser: undefined | (( uid: string ) => Promise<string[]>);
     GetUserAttendance: undefined | (( uid: string ) => Promise<AttendeeModal[]>);
-    GetBarcodeData: undefined | ((docRef: string) => Promise<QRCodeModal>);
+    GetBarcodeData: undefined | ((docRef: string) => Promise<QRCodeModal | undefined>);
     DestoryBarcode: undefined | ((docRef: string) => Promise<Message>);
     BarcodeExist: undefined | ((docRef: string) => Promise<Message>);
 }
@@ -39,7 +39,7 @@ const AuthContextTypeDefault: AuthContextType =  {
     SignUp: undefined,
     Login: undefined,
     Logout: undefined,
-    CreateQrCode: undefined,
+    createqrcode: undefined,
     GetUserDetails: undefined,
     MarkStudent: undefined,
     GetStudentsWithDocRef: undefined,
@@ -116,12 +116,12 @@ export const AuthProvider: React.FC = ({ children }) => {
         return data;
     }
 
-    const GetUserAttandance = async ( uid: string ): Promise<AttendeeModal[]> => {
+    const GetUserAttendance = async ( uid: string ): Promise<AttendeeModal[]> => {
         const data = await getUserAttendance(uid);
         return data
     }
 
-    async function GetBarcodeData(docRef: string): Promise<QRCodeModal> {
+    async function GetBarcodeData(docRef: string): Promise<QRCodeModal | undefined> {
         return await getBarcodeData(docRef)
     }
 
@@ -145,7 +145,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         MarkStudent,
         GetStudentsWithDocRef,
         GetBarcodesByUser,
-        GetUserAttandance,
+        GetUserAttendance,
         GetBarcodeData,
         DestoryBarcode,
         BarcodeExist

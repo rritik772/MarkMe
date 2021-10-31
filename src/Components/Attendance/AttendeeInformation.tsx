@@ -4,10 +4,10 @@ import { EmojiHappyIcon } from "@heroicons/react/outline";
 import { AttendeeModal } from "../../Modal/AttendeeModal";
 
 interface IAttendeInformation {
-  attendeeInfo: IAttendee
+  attendeeInfo: AttendeeModal
 };
 
-const AttendeeInformation: React.FC<AttendeeModal> = ({ attendeeInfo }): JSX.Element => {
+const AttendeeInformation: React.FC<IAttendeInformation> = ({ attendeeInfo }): JSX.Element => {
   const status = ( attendeeInfo.status === 2 )?'Present' : 'Absent';
 
   return(
