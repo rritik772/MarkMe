@@ -29,12 +29,12 @@ const ScanQrCode = () => {
   }, [ currentUser ])
 
   const onHandleMarkStudent = async ( status: number ) => {
-    if ( scannedData ){
+    if ( scannedData && currentUser && userDetail ){
       const datetimestamp = new Date();
       const [ datestamp, timestamp ] = datetimestamp.toLocaleString().split(", ")
 
       const attendeeModal: AttendeeModal = new AttendeeModal(
-        currentUser!!.email,
+        currentUser.email!!,
         userDetail.full_name,
         scannedData.meeting_id,
         status,
@@ -43,17 +43,18 @@ const ScanQrCode = () => {
         userDetail.uid,
         datestamp,
         timestamp
-      );
+      )
 
       const response: Message = await MarkStudent!!(scannedData.ref, attendeeModal)
 
       setAlert(response)
       setScannedData(undefined)
     } else
-      setAlert(0, "Something went wrong.")
+      setAlert(new Message(0, "Something went wrong."));
   }
 
   const handleScanningResult = (value: string) => {
+    console.log(value)
     setScannedData(undefined);
     if (value !== null && value.length > 0){
       try {
@@ -93,7 +94,7 @@ const ScanQrCode = () => {
         {(toggleCamera)?
          <section className="flex justify-center rounded-md overflow-hidden p-5 border-4 border-sky-500 bg-white">
            <QrReader
-             delay={100}
+             delay={1000}
              style={{width: '100%'}}
              onError={(e: any) => setAlert(new Message(0, "Something went wrong."))}
              onScan={(e: any) => handleScanningResult(e)}

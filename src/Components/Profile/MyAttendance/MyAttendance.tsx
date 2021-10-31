@@ -1,5 +1,5 @@
 import { ArrowCircleLeftIcon, EmojiHappyIcon } from "@heroicons/react/outline";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 import useToggle from "../../../Library/useToggle";
@@ -12,16 +12,16 @@ import Loading from "../../Loading/Loading";
 const MyAttendance = () => {
   const [ userAllAttendance, setUserAllAttendance ] = useState<AttendeeModal[]>([]);
   const [ loading, setLoading ] = useToggle();
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [ isClicked, setIsClicked ] = useState<boolean>(false);
 
-  const { currentUser, GetUserAttandance } = useAuth();
+  const { currentUser, GetUserAttendance } = useAuth();
 
     const userAttendanceFetcher = useMemo( async () => {
       setLoading();
 
         const { uid } = currentUser!!;
-        await GetUserAttandance!!(uid)
-            .then( data => {
+        await GetUserAttendance!!(uid)
+        .then( (data: AttendeeModal[]) => {
               setUserAllAttendance( data )
             })
       setLoading();
@@ -45,7 +45,7 @@ const MyAttendance = () => {
   )
 }
 
-const SingleAttandance = ({ Information }) => {
+const SingleAttandance: React.FC<{ Information: AttendeeModal }> = ({ Information }) => {
 
   const [ isClicked, setIsClicked ] = useState<boolean>()
 

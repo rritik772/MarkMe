@@ -4,8 +4,9 @@ import { EmojiHappyIcon } from "@heroicons/react/outline";
 import { IAttendee, Status } from "./InterfaceAttendee";
 import AttendeeInformation from "./AttendeeInformation";
 import { useAuth } from "../../Context/AuthContext";
+import { AttendeeModal } from "../../Modal/AttendeeModal";
 
-const SingleAttendee: React.FC<ISingleAttendee> = ({ Information }): JSX.Element => {
+const SingleAttendee: React.FC<{ Information: AttendeeModal }> = ({ Information }): JSX.Element => {
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
   return (

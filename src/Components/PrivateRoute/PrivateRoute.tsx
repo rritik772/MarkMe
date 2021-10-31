@@ -10,8 +10,6 @@ export interface IPrivateRoute {
 
 const PrivateRoute: React.FC<IPrivateRoute> = ({ comp: Component, ...rest }): JSX.Element => {
   const { loading, currentUser } = useAuth();
-  if ( currentUser )
-    console.log( "User logged in: ", currentUser.email, " typof", typeof currentUser )
 
   return (
     <Route {...rest} render={ props => {

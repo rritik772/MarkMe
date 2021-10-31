@@ -8,10 +8,6 @@ import { useEffect } from "react";
 const Dashboard = (): JSX.Element => {
   const { currentUser, BarcodeExist } = useAuth();
 
-  useEffect(() => {
-    BarcodeExist("sdfS6DRg6kTo4FVtpGm5kZu")
-  }, [])
-
   return (
     <>
       <div className="flex flex-col justify-center items-center space-y-5">
