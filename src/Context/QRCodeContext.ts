@@ -149,7 +149,7 @@ export const destroyQRCode = async ( docRef: string ): Promise<Message> => {
 export const barcodeExist = async ( docRef: string ): Promise<Message> => {
   const document = await getDoc(doc(firestore, `qrcode/${docRef}`).withConverter(QRCodeModalConverter));
 
-  if ( document.data() && document.data().destroyed === false ){
+  if ( document.exists() && document.data().destroyed === false ){
     return new Message(2, "Valid Qr Code");
   }
   return new Message(0, "Invalid Qr Code");

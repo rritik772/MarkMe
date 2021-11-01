@@ -62,7 +62,7 @@ function Login() {
           <span className="text-3xl uppercase font-plex-sans">Login</span>
         </section>
         {
-          alert && <MessageBox message={alert} isClickedProp={false} />
+          alert && <MessageBox message={alert} />
         }
         <main className="md:w-1/2 lg:w-5/12 xl:w-4/12 mx-auto p-5 rounded-md bg-white shadow-lg">
           <form>
