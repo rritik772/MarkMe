@@ -17,6 +17,7 @@ const ScanQrCode = () => {
   const [ alert, setAlert ] = useState<Message | null>();
   const [ scannedData, setScannedData ] = useState<InterfaceMeeting | undefined>();
   const [ toggleCamera, setToggleCamera ] = useToggle(true);
+  const [ scannedRef, setScannedRef ] = useState<string>('');
   const [ userDetail, setUserDetail ] = useState<UserModal | undefined>( undefined );
 
   const { currentUser, MarkStudent, GetUserDetails, BarcodeExist } = useAuth();
@@ -45,7 +46,7 @@ const ScanQrCode = () => {
         timestamp
       )
 
-      const response: Message = await MarkStudent!!(scannedData.ref, attendeeModal)
+      const response: Message = await MarkStudent!!(scannedRef, attendeeModal)
 
       setAlert(response)
       setTimeout(() => setAlert(undefined), 4000)
@@ -60,12 +61,10 @@ const ScanQrCode = () => {
     setScannedData(undefined);
     if (value !== null && value.length > 0){
       try {
-        const data: InterfaceMeeting = JSON.parse(value);
-
-        if (data.meeting_id == undefined || data.host_email_id == undefined || data.topic == undefined || data.ref === undefined) throw "Invalid QRcode";
-
-        BarcodeExist!!(data.ref)
-          .then(message => {
+        BarcodeExist!!(value)
+          .then(( response ) => {
+            const data = response.data;
+            const message = response.message;
             if(message.messageType === 0){
               setAlert(message)
               setTimeout(() => setAlert(undefined), 4000)
@@ -75,6 +74,9 @@ const ScanQrCode = () => {
             setScannedData(data);
             setToggleCamera();
           })
+
+        setScannedRef(value);
+
       }catch(error) {
         setAlert(new Message(0, "Somethin went wrong!"));
         setTimeout(() => setAlert(undefined), 4000)
