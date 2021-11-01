@@ -48,9 +48,11 @@ const ScanQrCode = () => {
       const response: Message = await MarkStudent!!(scannedData.ref, attendeeModal)
 
       setAlert(response)
+      setTimeout(() => setAlert(undefined), 4000)
       setScannedData(undefined)
     } else
       setAlert(new Message(0, "Something went wrong."));
+      setTimeout(() => setAlert(undefined), 4000)
   }
 
   const handleScanningResult = (value: string) => {
@@ -66,6 +68,7 @@ const ScanQrCode = () => {
           .then(message => {
             if(message.messageType === 0){
               setAlert(message)
+              setTimeout(() => setAlert(undefined), 4000)
               return;
             }
 
@@ -74,6 +77,7 @@ const ScanQrCode = () => {
           })
       }catch(error) {
         setAlert(new Message(0, "Somethin went wrong!"));
+        setTimeout(() => setAlert(undefined), 4000)
         setToggleCamera();
       }
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export enum IMessageType {
   Error = 0,
@@ -26,6 +26,7 @@ interface IMessageBox {
 }
 
 const MessageBox:React.FC<IMessageBox> =  ({ message }): JSX.Element  => {
+  const [ isClicked, setIsClicked ] = useState<boolean>(false);
 
   if ( message == undefined ) return <></>;
 
@@ -35,8 +36,8 @@ const MessageBox:React.FC<IMessageBox> =  ({ message }): JSX.Element  => {
       'bg-green-300';
 
   return (
-    <main className={`md:w-1/2 lg:w-5/12 xl:w-4/12 mx-auto my-5 p-5 ${messageColor} rounded-md text-center font-plex-sans md:text-lg`}>
-    { message.messageString }
+    <main className={`md:w-1/2 lg:w-5/12 xl:w-4/12 flex justify-between mx-auto my-5 p-5 ${messageColor} rounded-md text-center font-plex-sans md:text-lg`}>
+      <div>{ message.messageString }</div>
     </main>
   )
 }

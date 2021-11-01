@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import useToggle from "../../Library/useToggle";
 import { sha256 } from "js-sha256";
 
@@ -14,16 +14,32 @@ function SignUp() {
   const [ university, setUniversity ] = useState<string>('');
   const [ password1, setPassword1 ]   = useState<string>('');
   const [ password2, setPassword2 ]   = useState<string>('');
+  const [ disableSignup, setDisableSignUp ] = useState<boolean>(true);
 
   const [ alert, setAlert ] = useState<Message | undefined>();
   const [ formVisible, setFormVisible ] = useToggle(true);
 
-  const { currentUser, SignUp } = useAuth();
+  const { currentUser, SignUp, UserAlreadyExist } = useAuth();
   const history = useHistory();
 
   if ( currentUser ) history.push("/dashboard")
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEmailCheckup = () => {
+    setAlert(undefined);
+    setDisableSignUp(false);
+
+    UserAlreadyExist!!(email)
+      .then((message) => {
+        if (message.messageType === 1){
+          setAlert(message);
+          setDisableSignUp(true);
+        } else {
+          setDisableSignUp(false);
+        }
+      })
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAlert(undefined);
 
@@ -115,13 +131,13 @@ function SignUp() {
             }
             {
               formVisible &&
-                <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setFormVisible()}>Next</button>
+                <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => { setFormVisible(); handleEmailCheckup() }}>Next</button>
             }
             {
             !formVisible &&
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setFormVisible()}>Previous</button>
-                <button type="submit" className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg">SignUp</button>
+              <button type="submit" disabled={disableSignup} className={`py-2 rounded-md ${(disableSignup)?"bg-sky-200":"bg-sky-500"} text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg`}>SignUp</button>
               </div>
             }
           </div>
