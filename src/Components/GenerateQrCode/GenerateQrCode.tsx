@@ -27,15 +27,8 @@ const GenerateQrCode = () => {
 
   const qrString = ( doc_id: string ) => {
 
-    const data =  {
-      "meeting_id" : `${meetingID}`,
-      "topic" : `${topic}`,
-      "host_email_id" : `${hostEmailID}`,
-      "ref": `${doc_id}`
-    };
-
-    const json = JSON.stringify(data);
-    setQRCodeString(json);
+    const data =  doc_id;
+    setQRCodeString(data);
 
     setDocID('');
     setDocID(doc_id);
@@ -48,7 +41,6 @@ const GenerateQrCode = () => {
 
   const handleWritingQrCode = async (e: React.FormEvent)=> {
     e.preventDefault();
-
 
     const datetimestamp = new Date();
     const [ datestamp, timestamp ] = datetimestamp.toLocaleString().split(", ")

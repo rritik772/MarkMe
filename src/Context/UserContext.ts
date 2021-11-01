@@ -116,4 +116,5 @@ export const sendPasswordReset = async ( email: string ): Promise<Message> => {
       console.error(error)
       return new Message( 0, "Something went wrong." );
     })
+  return new Message( 0, "Something went wrong." );
 }

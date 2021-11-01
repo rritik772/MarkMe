@@ -5,7 +5,7 @@ import { Status } from "../Components/Attendance/InterfaceAttendee"
 import { Message } from "../Components/Message/MessageBox"
 import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting"
 import { AttendeeModal, AttendeeModalConverter } from "../Modal/AttendeeModal"
-import { QRCodeModal, QRCodeModalConverter } from "../Modal/QRCodeModal"
+import { QRCodeModal, QRCodeModalConverter, QRCodeModalDefault } from "../Modal/QRCodeModal"
 
 export interface IQrCode {
   meeting_id: string,
@@ -148,9 +148,17 @@ export const destroyQRCode = async ( docRef: string ): Promise<Message> => {
 // Barcode document exist
 export const barcodeExist = async ( docRef: string ): Promise<Message> => {
   const document = await getDoc(doc(firestore, `qrcode/${docRef}`).withConverter(QRCodeModalConverter));
+  const data = document.data();
 
-  if ( document.data() && document.data().destroyed === false ){
-    return new Message(2, "Valid Qr Code");
+  if ( document.exists() ){
+    return {
+      data: data,
+      message: new Message(2, "Valid Qr Code")
+    };
   }
-  return new Message(0, "Invalid Qr Code");
+  return {
+    data: QRCodeModalDefault,
+    message: new Message(0, "Invalid Qr Code")
+  }
 }
+// --------------------------------------------------------------------------------------------

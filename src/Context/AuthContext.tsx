@@ -19,7 +19,7 @@ import { QRCodeModal } from "../Modal/QRCodeModal";
 export interface AuthContextType {
     loading: boolean;
     currentUser: User | undefined;
-    UserAlreadyExist: undefined | ((email_id: string) => Promise<async>);
+    UserAlreadyExist: undefined | ((email_id: string) => Promise<Message>);
     SignUp: undefined | ((signupDetails: ISignUp) => Promise<Message>);
     Login: undefined  | ((email: string, password: string) => Promise<Message>);
     Logout: undefined | (() => Promise<Message>);

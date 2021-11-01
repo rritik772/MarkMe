@@ -68,3 +68,13 @@ export const QRCodeModalConverter = {
     )
   }
 }
+
+export const QRCodeModalDefault = new QRCodeModal (
+  "NA",
+  false,
+  "NA",
+  "NA",
+  "NA",
+  "NA",
+  "NA",
+)
