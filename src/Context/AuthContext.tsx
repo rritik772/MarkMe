@@ -5,7 +5,7 @@ import Loading from "../Components/Loading/Loading";
 import useToggle from "../Library/useToggle"
 import { Message } from "../Components/Message/MessageBox";
 import { auth } from "./../../firebase";
-import { createQrCode, ICreateQrCode, IQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist } from "./QRCodeContext";
+import { createQrCode, ICreateQrCode, IQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist, IBarcodeExist } from "./QRCodeContext";
 import { login, logout, signup, getUserDetails, userAlreadyExist, sendPasswordReset } from "./UserContext";
 import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting";
 import { Status } from "../Components/Attendance/InterfaceAttendee";
@@ -31,7 +31,7 @@ export interface AuthContextType {
     GetUserAttendance: undefined | (( uid: string ) => Promise<AttendeeModal[]>);
     GetBarcodeData: undefined | ((docRef: string) => Promise<QRCodeModal | undefined>);
     DestoryBarcode: undefined | ((docRef: string) => Promise<Message>);
-    BarcodeExist: undefined | ((docRef: string) => Promise<Message>);
+    BarcodeExist: undefined | ((docRef: string) => Promise<IBarcodeExist>);
     SendPasswordReset: undefined | ((email: string) => Promise<Message>);
 }
 
@@ -141,7 +141,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         return await destroyQRCode(docRef)
     }
 
-    async function BarcodeExist( docRef: string ): Promise<Message> {
+    async function BarcodeExist( docRef: string ): Promise<IBarcodeExist> {
         return await barcodeExist(docRef)
     }
     // -----------------------------------------------------------------

@@ -12,10 +12,11 @@ import Loading from '../Loading/Loading';
 import { useAuth } from '../../Context/AuthContext';
 import { AttendeeModal } from '../../Modal/AttendeeModal';
 import UserModal from '../../Modal/UserModal';
+import { QRCodeModal } from '../../Modal/QRCodeModal';
 
 const ScanQrCode = () => {
   const [ alert, setAlert ] = useState<Message | null>();
-  const [ scannedData, setScannedData ] = useState<InterfaceMeeting | undefined>();
+  const [ scannedData, setScannedData ] = useState<QRCodeModal | undefined>();
   const [ toggleCamera, setToggleCamera ] = useToggle(true);
   const [ scannedRef, setScannedRef ] = useState<string>('');
   const [ userDetail, setUserDetail ] = useState<UserModal | undefined>( undefined );
@@ -65,6 +66,7 @@ const ScanQrCode = () => {
           .then(( response ) => {
             const data = response.data;
             const message = response.message;
+            console.log( response )
             if(message.messageType === 0){
               setAlert(message)
               setTimeout(() => setAlert(undefined), 4000)
