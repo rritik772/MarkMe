@@ -6,7 +6,7 @@ import useToggle from "../Library/useToggle"
 import { Message } from "../Components/Message/MessageBox";
 import { auth } from "./../../firebase";
 import { createQrCode, ICreateQrCode, IQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist } from "./QRCodeContext";
-import { login, logout, signup, getUserDetails } from "./UserContext";
+import { login, logout, signup, getUserDetails, userAlreadyExist, sendPasswordReset } from "./UserContext";
 import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting";
 import { Status } from "../Components/Attendance/InterfaceAttendee";
 import { DocumentData, QuerySnapshot } from "firebase/firestore";
@@ -19,6 +19,7 @@ import { QRCodeModal } from "../Modal/QRCodeModal";
 export interface AuthContextType {
     loading: boolean;
     currentUser: User | undefined;
+    UserAlreadyExist: undefined | ((email_id: string) => Promise<async>);
     SignUp: undefined | ((signupDetails: ISignUp) => Promise<Message>);
     Login: undefined  | ((email: string, password: string) => Promise<Message>);
     Logout: undefined | (() => Promise<Message>);
@@ -31,11 +32,13 @@ export interface AuthContextType {
     GetBarcodeData: undefined | ((docRef: string) => Promise<QRCodeModal | undefined>);
     DestoryBarcode: undefined | ((docRef: string) => Promise<Message>);
     BarcodeExist: undefined | ((docRef: string) => Promise<Message>);
+    SendPasswordReset: undefined | ((email: string) => Promise<Message>);
 }
 
 const AuthContextTypeDefault: AuthContextType =  {
     loading: false,
     currentUser: undefined,
+    UserAlreadyExist: undefined,
     SignUp: undefined,
     Login: undefined,
     Logout: undefined,
@@ -47,7 +50,8 @@ const AuthContextTypeDefault: AuthContextType =  {
     GetUserAttendance: undefined,
     GetBarcodeData: undefined,
     DestoryBarcode: undefined,
-    BarcodeExist: undefined
+    BarcodeExist: undefined,
+    SendPasswordReset: undefined
 }
 
 // -----------------------------------------------------
@@ -79,6 +83,14 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     async function GetUserDetails(userId: string): Promise<UserModal> {
         return await getUserDetails(userId)
+    }
+
+    async function UserAlreadyExist(email_id: string): Promise<Message> {
+        return await userAlreadyExist(email_id);
+    }
+
+    async function SendPasswordReset( email: string ): Promise<Message> {
+        return await sendPasswordReset(email);
     }
 
     useEffect(() => {
@@ -137,6 +149,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const values = { 
         loading,
         currentUser,
+        UserAlreadyExist,
         SignUp,
         Login,
         Logout,
@@ -148,7 +161,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         GetUserAttendance,
         GetBarcodeData,
         DestoryBarcode,
-        BarcodeExist
+        BarcodeExist,
+        SendPasswordReset
     }
 
     if ( loading ) return <Loading/>

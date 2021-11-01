@@ -36,15 +36,9 @@ const MessageBox:React.FC<IMessageBox> =  ({ message }): JSX.Element  => {
       'bg-green-300';
 
   return (
-    <div>
-      {
-        !isClicked &&
-          <main className={`md:w-1/2 lg:w-5/12 xl:w-4/12 flex justify-between mx-auto my-5 p-5 ${messageColor} rounded-md text-center font-plex-sans md:text-lg`}>
-            <div>{ message.messageString }</div>
-            <div className="cursor-pointer" onClick={() => setIsClicked(true)}>&#10006;</div>
-          </main>
-      }
-    </div>
+    <main className={`md:w-1/2 lg:w-5/12 xl:w-4/12 flex justify-between mx-auto my-5 p-5 ${messageColor} rounded-md text-center font-plex-sans md:text-lg`}>
+      <div>{ message.messageString }</div>
+    </main>
   )
 }
 

@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { collection, addDoc, setDoc, doc, getDoc, where, query, getDocs } from "firebase/firestore";
 import { ref, set } from "firebase/database";
 import { Message } from "../Components/Message/MessageBox";
 import { auth, firestore } from "./../../firebase"
@@ -73,6 +73,22 @@ export const logout = async (): Promise<Message> => {
 ////
 
 //// --------------------------------------------------------------------
+// User already exist
+export const userAlreadyExist = async ( email_id: string ): Promise<Message> => {
+  let message: Message = new Message(2, "No such user Exist");
+
+  const userRef = collection(firestore, "users")
+  const q = query(userRef, where("email", "==", email_id));
+
+  const document = await getDocs(q);
+
+  document.forEach(item => {
+    if (item.data().email === email_id){
+      message = new Message(1, "Looks like you already have a account.");
+    }
+  })
+  return message
+}
 /// ---------------------------------------------------------------------
 
 ////
@@ -83,7 +99,21 @@ export const getUserDetails = async ( userId: string ): Promise<UserModal> => {
   if ( docSnap.exists() ){
     return docSnap.data()
   }
-  console.log("Error getting user")
+  console.error("Error getting user")
   return UserModalDefault
 }
 // ----------------------------------------------------------------------
+
+////
+// user Password reset
+export const sendPasswordReset = async ( email: string ): Promise<Message> => {
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      console.log("Sent Password link")
+      return new Message( 2, "Password reset link sent." );
+    })
+    .catch(error => {
+      console.error(error)
+      return new Message( 0, "Something went wrong." );
+    })
+}
