@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { QRCodeModal } from "../../Modal/QRCodeModal";
 import MessageBox, { Message } from "../Message/MessageBox";
-import InterfaceMeeting from "./InterfaceMeeting";
 
 interface IMeetingInfo {
-  scannedData: InterfaceMeeting | undefined
+  scannedData: QRCodeModal | undefined
 }
 
 const MeetingInfo: React.FC<IMeetingInfo> = ( { scannedData } ): JSX.Element =>  {

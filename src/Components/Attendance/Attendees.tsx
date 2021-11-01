@@ -32,15 +32,9 @@ const Attendees = (): JSX.Element => {
           setBarcodeAlert("No Barcode Avaliable");
           return;
         };
-        const barcodeData =  {
-          "meeting_id" : `${data.meeting_id}`,
-          "topic" : `${data.topic}`,
-          "host_email_id" : `${data.host_email_id}`,
-          "ref": `${docRef}`
-        };
+        const barcodeData =  docRef;
 
-        const json = JSON.stringify(barcodeData);
-        setQRCodeString(json);
+        setQRCodeString(barcodeData);
       });
   }, [ destroyedAlert ])
 
