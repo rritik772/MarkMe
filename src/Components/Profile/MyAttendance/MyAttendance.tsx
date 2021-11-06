@@ -6,7 +6,6 @@ import useToggle from "../../../Library/useToggle";
 import { AttendeeModal } from "../../../Modal/AttendeeModal";
 import AttendeeInformation from "../../Attendance/AttendeeInformation";
 import { Status } from "../../Attendance/InterfaceAttendee";
-import SingleAttendee from "../../Attendance/SingleAttendee";
 import Loading from "../../Loading/Loading";
 
 const MyAttendance = () => {
@@ -16,7 +15,7 @@ const MyAttendance = () => {
 
   const { currentUser, GetUserAttendance } = useAuth();
 
-  const userAttendanceFetcher = useMemo(async () => {
+  useMemo(async () => {
     setLoading();
 
     const { uid } = currentUser!!;
@@ -82,7 +81,7 @@ const SingleAttandance: React.FC<{ Information: AttendeeModal }> = ({ Informatio
         {
           (!isClicked) &&
           <div className="flex space-x-5 items-center">
-            <span className="truncate">{Information.timestamp}</span>
+            <span className="truncate">{Information.convertTimestamp()}</span>
           </div>
         }
       </section>

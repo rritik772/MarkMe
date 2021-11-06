@@ -17,4 +17,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore();
 export const auth = getAuth();
-export const storage = getStorage(app, "gs://markme77232.appspot.com");
+export const storage = getStorage(app);

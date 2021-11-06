@@ -76,7 +76,7 @@ const GenerateQrCode = () => {
     <>
       {alert && <MessageBox message={alert} />}
       <div className="w-full svg-background-layered-steps"></div>
-      <div className="container mx-auto space-y-10">
+      <div className="container mx-auto space-y-10 my-10">
         <section className="grid grid-cols-3 lg:w-1/2 mx-auto font-plex-sans">
           <Link to="/dashboard"><ArrowCircleLeftIcon className="h-10 text-blue-500" /></Link>
           <span className="text-3xl font-plex-sans">Generate Qr Code</span>

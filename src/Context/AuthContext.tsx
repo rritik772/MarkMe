@@ -19,7 +19,7 @@ export interface AuthContextType {
     SignUp: undefined | ((signupDetails: ISignUp) => Promise<Message>);
     Login: undefined  | ((email: string, password: string) => Promise<Message>);
     Logout: undefined | (() => Promise<Message>);
-    createqrcode: undefined | ((qrCodeDetails: IQrCode) => Promise<ICreateQrCode>);
+    createqrcode: undefined | ((qrCodeDetails: QRCodeModal) => Promise<ICreateQrCode>);
     GetUserDetails: undefined | ((user_id: string) => Promise<UserModal>);
     MarkStudent: undefined | ((docRef: string, attendeeModal: AttendeeModal) => Promise<Message>);
     GetStudentsWithDocRef: undefined | ((docRef: string) => Promise<AttendeeModal[]>);
