@@ -7,4 +7,5 @@
     bottom: 0;
     height: 300px;
     z-index: -1;
+    filter: blur(40px);
 }

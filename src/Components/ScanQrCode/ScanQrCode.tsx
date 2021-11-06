@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import QrReader from 'react-qr-reader'
 import { Link } from "react-router-dom";
 import { ArrowCircleLeftIcon } from "@heroicons/react/outline";
@@ -7,12 +7,11 @@ import "./ScanQrCode.css"
 import useToggle from '../../Library/useToggle';
 import MessageBox, { Message } from '../Message/MessageBox';
 import MeetingInfo from './Meeting_Info';
-import InterfaceMeeting from "./InterfaceMeeting";
-import Loading from '../Loading/Loading';
 import { useAuth } from '../../Context/AuthContext';
 import { AttendeeModal } from '../../Modal/AttendeeModal';
 import UserModal from '../../Modal/UserModal';
 import { QRCodeModal } from '../../Modal/QRCodeModal';
+import { serverTimestamp, Timestamp } from 'firebase/firestore';
 
 const ScanQrCode = () => {
   const [ alert, setAlert ] = useState<Message | null>();
@@ -23,18 +22,15 @@ const ScanQrCode = () => {
 
   const { currentUser, MarkStudent, GetUserDetails, BarcodeExist } = useAuth();
 
-  let userDetailGetter = useMemo(async () => {
+  useMemo(async () => {
     const response = await GetUserDetails!!(currentUser!!.uid)
-    const data = await response;
+    const data = response;
 
     setUserDetail( data )
   }, [ currentUser ])
 
   const onHandleMarkStudent = async ( status: number ) => {
     if ( scannedData && currentUser && userDetail ){
-      const datetimestamp = new Date();
-      const [ datestamp, timestamp ] = datetimestamp.toLocaleString().split(", ")
-
       const attendeeModal: AttendeeModal = new AttendeeModal(
         currentUser.email!!,
         userDetail.full_name,
@@ -43,8 +39,7 @@ const ScanQrCode = () => {
         userDetail.unique_id,
         userDetail.university,
         userDetail.uid,
-        datestamp,
-        timestamp
+        serverTimestamp() as Timestamp
       )
 
       const response: Message = await MarkStudent!!(scannedRef, attendeeModal)
@@ -58,7 +53,6 @@ const ScanQrCode = () => {
   }
 
   const handleScanningResult = (value: string) => {
-    console.log(value)
     setScannedData(undefined);
     if (value !== null && value.length > 0){
       try {
@@ -66,7 +60,6 @@ const ScanQrCode = () => {
           .then(( response ) => {
             const data = response.data;
             const message = response.message;
-            console.log( response )
             if(message.messageType === 0){
               setAlert(message)
               setTimeout(() => setAlert(undefined), 4000)
@@ -104,7 +97,7 @@ const ScanQrCode = () => {
            <QrReader
              delay={1000}
              style={{width: '100%'}}
-             onError={(e: any) => setAlert(new Message(0, "Something went wrong."))}
+             onError={() => setAlert(new Message(0, "Something went wrong."))}
              onScan={(e: any) => handleScanningResult(e)}
            />
          </section> :

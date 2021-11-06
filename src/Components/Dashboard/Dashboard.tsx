@@ -1,9 +1,7 @@
 import { CameraIcon, QrcodeIcon, IdentificationIcon, BriefcaseIcon } from "@heroicons/react/outline";
 import "./Dashboard.css"
 import { Link } from "react-router-dom";
-import Loading from "../Loading/Loading";
 import { useAuth } from "../../Context/AuthContext";
-import { useEffect } from "react";
 
 const Dashboard = (): JSX.Element => {
   const { currentUser, BarcodeExist } = useAuth();

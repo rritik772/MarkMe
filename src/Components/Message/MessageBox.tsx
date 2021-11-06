@@ -26,7 +26,6 @@ interface IMessageBox {
 }
 
 const MessageBox:React.FC<IMessageBox> =  ({ message }): JSX.Element  => {
-  const [ isClicked, setIsClicked ] = useState<boolean>(false);
 
   if ( message == undefined ) return <></>;
 

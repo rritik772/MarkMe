@@ -2,6 +2,7 @@ import { ArrowCircleLeftIcon, ExclamationCircleIcon } from "@heroicons/react/out
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
+import { QRCodeModal } from "../../../Modal/QRCodeModal";
 import AttendeeIterator from "../../Attendance/AttendeeIterator";
 import Loading from "../../Loading/Loading";
 
@@ -12,7 +13,7 @@ const TakenAttendance = () => {
   const { currentUser, GetBarcodesByUser } = useAuth();
 
   useEffect(() => {
-    const getBarcodeData = async () => {
+    const getUserBarcodes = async () => {
       setLoading(true);
 
       const uid = currentUser!!.uid;
@@ -23,7 +24,7 @@ const TakenAttendance = () => {
           setLoading(false)
         })
     }
-    getBarcodeData();
+    getUserBarcodes();
   }, [])
 
 

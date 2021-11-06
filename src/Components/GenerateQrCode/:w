@@ -8,7 +8,7 @@ import { ICreateQrCode } from "../../Context/QRCodeContext";
 import { useAuth } from "../../Context/AuthContext";
 import MessageBox, { Message } from "../Message/MessageBox";
 import { QRCodeModal } from "../../Modal/QRCodeModal";
-import { serverTimestamp, Timestamp } from "firebase/firestore";
+import { serverTimestamp } from "firebase/firestore";
 
 const GenerateQrCode = () => {
   const [meetingID, setMeetingID] = useState<string>('');
@@ -47,7 +47,7 @@ const GenerateQrCode = () => {
 
 
     const qrCodeDetails: QRCodeModal = new QRCodeModal(
-      serverTimestamp() as Timestamp,
+      serverTimestamp(),
       false,
       hostEmailID,
       meetingID,
@@ -76,7 +76,7 @@ const GenerateQrCode = () => {
     <>
       {alert && <MessageBox message={alert} />}
       <div className="w-full svg-background-layered-steps"></div>
-      <div className="container mx-auto space-y-10 my-10">
+      <div className="container mx-auto space-y-10">
         <section className="grid grid-cols-3 lg:w-1/2 mx-auto font-plex-sans">
           <Link to="/dashboard"><ArrowCircleLeftIcon className="h-10 text-blue-500" /></Link>
           <span className="text-3xl font-plex-sans">Generate Qr Code</span>

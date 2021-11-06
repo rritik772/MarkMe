@@ -1,4 +1,4 @@
-import { DocumentData, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot, SnapshotOptions, Timestamp } from "firebase/firestore";
 
 export class AttendeeModal {
 
@@ -9,8 +9,7 @@ export class AttendeeModal {
   unique_id: string;
   university: string;
   uid: string;
-  datestamp: string;
-  timestamp: string;
+  stamp: Timestamp;
 
   constructor(
     email_id: string,
@@ -20,8 +19,7 @@ export class AttendeeModal {
     unique_id: string,
     university: string,
     uid: string,
-    datestamp: string,
-    timestamp: string
+    stamp: Timestamp
   ) {
     this.email_id = email_id;
     this.full_name = full_name;
@@ -30,51 +28,59 @@ export class AttendeeModal {
     this.unique_id = unique_id;
     this.university = university;
     this.uid = uid;
-    this.timestamp = timestamp;
-    this.datestamp = datestamp;
+    this.stamp = stamp
+  }
+
+  convertDatestamp() {
+    const date = this.stamp.toDate();
+    const dstamp = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+    return dstamp;
+  }
+
+  convertTimestamp() {
+    const date = this.stamp.toDate();
+    const tstamp = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    return tstamp;
   }
 
   toString() {
+    const status = (this.status === 1) ? 'Absent' : 'Present';
+
     return (
-      this.email_id + " "
-        + this.full_name + " "
-        + this.meeting_id + " "
-        + this.status + " "
-        + this.unique_id + " "
-        + this.university + " "
-        + this.uid + " "
-        + this.datestamp + " "
-        + this.timestamp + " "
+      this.unique_id + ',' +
+      this.email_id + ',' +
+      this.full_name + ',' +
+      status + ',' +
+      this.convertDatestamp() + ',' +
+      this.convertTimestamp() + ','
     );
   }
 }
 
 export const AttendeeModalConverter = {
-  toFirestore( attendeeModal:AttendeeModal ):DocumentData {
+  toFirestore(attendeeModal: AttendeeModal): DocumentData {
     return {
-        email_id : attendeeModal.email_id,
-        full_name : attendeeModal.full_name,
-        meeting_id : attendeeModal.meeting_id,
-        status : attendeeModal.status,
-        unique_id : attendeeModal.unique_id,
-        university : attendeeModal.university,
-        uid : attendeeModal.uid,
-        datestamp: attendeeModal.datestamp,
-        timestamp: attendeeModal.timestamp
+      email_id: attendeeModal.email_id,
+      full_name: attendeeModal.full_name,
+      meeting_id: attendeeModal.meeting_id,
+      status: attendeeModal.status,
+      unique_id: attendeeModal.unique_id,
+      university: attendeeModal.university,
+      uid: attendeeModal.uid,
+      stamp: attendeeModal.stamp
     }
   },
-  fromFirestore( snapshot: QueryDocumentSnapshot, options: SnapshotOptions ): AttendeeModal {
+  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): AttendeeModal {
     const data = snapshot.data(options);
     return new AttendeeModal(
-        data.email_id,
-        data.full_name,
-        data.meeting_id,
-        data.status,
-        data.unique_id,
-        data.university,
-        data.uid,
-        data.datestamp,
-        data.timestamp
+      data.email_id,
+      data.full_name,
+      data.meeting_id,
+      data.status,
+      data.unique_id,
+      data.university,
+      data.uid,
+      data.stamp
     );
   }
 }
