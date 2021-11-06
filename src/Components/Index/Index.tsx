@@ -18,6 +18,7 @@ import Nav from "../Nav/Nav";
 import Profile from "../Profile/Profile";
 import TakenAttendance from "../Profile/TakenAttendance/TakenAttendance";
 import MyAttendance from "../Profile/MyAttendance/MyAttendance";
+import UpdateProfile from "../Profile/UpdateProfile/UpdateProfile";
 
 function Index() {
 
@@ -40,6 +41,7 @@ function Index() {
               <PrivateRoute exact path="/dashboard/profile" comp={Profile}/>
               <PrivateRoute exact path="/dashboard/profile/myAttendance" comp={MyAttendance}/>
               <PrivateRoute exact path="/dashboard/profile/takenAttendance" comp={TakenAttendance}/>
+              <PrivateRoute exact path="/dashboard/profile/updateProfile" comp={UpdateProfile}/>
               <Route component={Error}/>
             </Switch>
           </AuthProvider>

@@ -1,15 +1,10 @@
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, Unsubscribe, User } from "firebase/auth";
-import React, { useContext, useEffect, useState } from "react";
+import { onAuthStateChanged, User } from "firebase/auth"; import React, { useContext, useEffect, useState } from "react";
 
 import Loading from "../Components/Loading/Loading";
-import useToggle from "../Library/useToggle"
 import { Message } from "../Components/Message/MessageBox";
 import { auth } from "./../../firebase";
-import { createQrCode, ICreateQrCode, IQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist, IBarcodeExist } from "./QRCodeContext";
-import { login, logout, signup, getUserDetails, userAlreadyExist, sendPasswordReset } from "./UserContext";
-import InterfaceMeeting from "../Components/ScanQrCode/InterfaceMeeting";
-import { Status } from "../Components/Attendance/InterfaceAttendee";
-import { DocumentData, QuerySnapshot } from "firebase/firestore";
+import { createQrCode, ICreateQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist, IBarcodeExist } from "./QRCodeContext";
+import { login, logout, signup, getUserDetails, userAlreadyExist, sendPasswordReset, updateUserDetails, getUserProfilePicURL, sendVerificationEmail } from "./UserContext";
 import UserModal, { ISignUp } from "../Modal/UserModal";
 import { AttendeeModal } from "../Modal/AttendeeModal";
 import { QRCodeModal } from "../Modal/QRCodeModal";
@@ -19,6 +14,7 @@ import { QRCodeModal } from "../Modal/QRCodeModal";
 export interface AuthContextType {
     loading: boolean;
     currentUser: User | undefined;
+    verified: boolean;
     UserAlreadyExist: undefined | ((email_id: string) => Promise<Message>);
     SignUp: undefined | ((signupDetails: ISignUp) => Promise<Message>);
     Login: undefined  | ((email: string, password: string) => Promise<Message>);
@@ -33,11 +29,15 @@ export interface AuthContextType {
     DestoryBarcode: undefined | ((docRef: string) => Promise<Message>);
     BarcodeExist: undefined | ((docRef: string) => Promise<IBarcodeExist>);
     SendPasswordReset: undefined | ((email: string) => Promise<Message>);
+    UpdateUserDetails: undefined | ((userModal: UserModal, file: File) => Promise<Message>);
+    GetUserProfilePicURL: undefined | ((uid: string) => Promise<string>);
+    SendVerificationEmail: undefined | ((uid: string) => Promise<Message>);
 }
 
 const AuthContextTypeDefault: AuthContextType =  {
     loading: false,
     currentUser: undefined,
+    verified: false,
     UserAlreadyExist: undefined,
     SignUp: undefined,
     Login: undefined,
@@ -51,7 +51,10 @@ const AuthContextTypeDefault: AuthContextType =  {
     GetBarcodeData: undefined,
     DestoryBarcode: undefined,
     BarcodeExist: undefined,
-    SendPasswordReset: undefined
+    SendPasswordReset: undefined,
+    UpdateUserDetails: undefined,
+    GetUserProfilePicURL: undefined,
+    SendVerificationEmail: undefined
 }
 
 // -----------------------------------------------------
@@ -68,6 +71,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     // User
     const [ loading, setLoading ] = useState<boolean>(true)
     const [ currentUser, setCurrentUser ] = useState<User | undefined>();
+    const [ verified, setVerified ] = useState<boolean>(false);
 
     async function SignUp(signupDetails: ISignUp ): Promise<Message> {
         return await signup( signupDetails )
@@ -93,12 +97,25 @@ export const AuthProvider: React.FC = ({ children }) => {
         return await sendPasswordReset(email);
     }
 
+    async function UpdateUserDetails( userModal: UserModal, file: File ): Promise<Message>{
+        return updateUserDetails(userModal, file)
+    }
+
+    async function GetUserProfilePicURL( uid: string ): Promise<string> {
+        return await getUserProfilePicURL(uid);
+    }
+
+    async function SendVerificationEmail( email: string ): Promise<Message> {
+        return await sendVerificationEmail(email);
+    }
+
     useEffect(() => {
         setLoading(false);
 
         const unsubscriber = onAuthStateChanged(auth, user => {
             if ( user ){
-                setCurrentUser(user)
+                setCurrentUser(user);
+                setVerified(user.emailVerified);
             }
         })
 
@@ -110,7 +127,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     ////
     // QR Code
-    const createqrcode = async (qrCodeDetails: IQrCode): Promise<ICreateQrCode> => {
+    const createqrcode = async (qrCodeDetails: QRCodeModal): Promise<ICreateQrCode> => {
         return await createQrCode(qrCodeDetails)
     }
 
@@ -149,6 +166,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const values = { 
         loading,
         currentUser,
+        verified,
         UserAlreadyExist,
         SignUp,
         Login,
@@ -162,7 +180,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         GetBarcodeData,
         DestoryBarcode,
         BarcodeExist,
-        SendPasswordReset
+        SendPasswordReset,
+        UpdateUserDetails,
+        GetUserProfilePicURL,
+        SendVerificationEmail
     }
 
     if ( loading ) return <Loading/>
