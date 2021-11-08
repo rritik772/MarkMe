@@ -1,49 +1,54 @@
-import { QrcodeIcon, ArrowCircleLeftIcon, ArrowCircleRightIcon } from "@heroicons/react/outline";
+import { ArrowCircleLeftIcon, ArrowCircleRightIcon } from "@heroicons/react/outline";
 import { Link, useParams } from "react-router-dom";
 import QRCode from "qrcode.react";
 import { useEffect, useState } from "react";
 
 import useToggle from "../../Library/useToggle";
-import AddStudent from "../AddStudent/AddStudent";
-import RemoveStudent from "../RemoveStudent/RemoveStudent";
-import SearchStudent from "../SearchStudent/SearchStudent";
 import AttendeeIterator from "./AttendeeIterator";
 import { useAuth } from "../../Context/AuthContext";
 import { Message } from "../Message/MessageBox";
-import ExportCSV from "../ExportCSV/ExportCSV";
+import { QRCodeModal, QRCodeModalDefault } from "../../Modal/QRCodeModal";
 
 const Attendees = (): JSX.Element => {
   const { docRef } = useParams<{ docRef: string }>();
 
-  const [toggleAddStudent, setToggleAddStudent] = useToggle();
-  const [toggleRemoveStudent, setToggleRemoveStudent] = useToggle();
   const [toggleSearchStudent, setToggleSearchStudent] = useToggle();
   const [toggleBarcode, setToggleBarcode] = useToggle();
-  const [toggleExportCSV, setToggleExportCSV] = useToggle();
 
+  const [meetingDetails, setMeetingDetails] = useState<QRCodeModal>(QRCodeModalDefault);
   const [qrCodeString, setQRCodeString] = useState<string>();
   const [reFetch, setReFetch] = useState<number>(0);
   const [destroyedAlert, setDestroyedAlert] = useState<Message | undefined>();
   const [barcodeAlert, setBarcodeAlert] = useState<string | undefined>();
+  const [searchString, setSearchString] = useState<string>('');
 
   const { GetBarcodeData, DestoryBarcode } = useAuth();
 
   useEffect(() => {
     GetBarcodeData!!(docRef)
       .then(data => {
-        if (data === undefined) {
+        if (data === undefined || data?.destroyed === true) {
           setBarcodeAlert("No Barcode Avaliable");
+          setTimeout(() => setBarcodeAlert(undefined), 400);
           return;
         };
         const barcodeData = docRef;
+        setMeetingDetails(data);
 
         setQRCodeString(barcodeData);
       });
-  }, [destroyedAlert])
+  }, [toggleBarcode])
 
   const handleDestroyQRCode = () => {
+    if (barcodeAlert === "No Barcode Avaliable") {
+      setBarcodeAlert(barcodeAlert);
+      setTimeout(() => setBarcodeAlert(undefined), 400);
+    }
     DestoryBarcode!!(docRef)
-      .then((message) => setDestroyedAlert(message))
+      .then((message) => {
+        setDestroyedAlert(message)
+        setTimeout(() => setDestroyedAlert(undefined), 400);
+      })
   }
 
   return (
@@ -55,10 +60,7 @@ const Attendees = (): JSX.Element => {
         </section>
         <main className="container flex flex-col md:flex-row mx-auto md:space-x-8 items-start">
           <section className="flex-grow w-full p-5 rounded-md space-y-2 bg-white">
-            <AttendeeIterator docRef={docRef} reFetch={(reFetch)} /> :
-            {/* {!toggleExportCSV ?
-              * <ExportCSV docRef={docRef} reFetch={reFetch} />
-              * } */}
+            <AttendeeIterator docRef={docRef} reFetch={(reFetch)} searchString={searchString} /> :
           </section>
           <nav className="md:flex-none w-full md:w-3/12 order-first md:order-last space-y-5">
             <div className="flex flex-col p-5 rounded-md space-y-4">
@@ -67,7 +69,6 @@ const Attendees = (): JSX.Element => {
                 destroyedAlert &&
                 <div className="flex justify-between items-center rounded-md p-3 bg-red-400 font-bold font-plex-sans-medium">
                   {destroyedAlert.messageString}
-                  <div className="cursor-pointer" onClick={() => setDestroyedAlert(undefined)}>&#10006;</div>
                 </div>
               }
               <button className="py-2 rounded-md bg-teal-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setToggleBarcode()}>Show Barcode</button>
@@ -75,7 +76,6 @@ const Attendees = (): JSX.Element => {
                 barcodeAlert &&
                 <div className="flex justify-between items-center rounded-md p-3 bg-red-400 font-bold font-plex-sans-medium">
                   {barcodeAlert}
-                  <div className="cursor-pointer" onClick={() => setBarcodeAlert(undefined)}>&#10006;</div>
                 </div>
               }
               {
@@ -88,13 +88,16 @@ const Attendees = (): JSX.Element => {
                 </div>
               }
               <button className="py-2 rounded-md bg-yellow-500 text-black font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setReFetch(reFetch + 1)}>Refresh Attandees</button>
-              {/*               <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setToggleExportCSV()}>Export CSV</button> */}
-              <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setToggleAddStudent()}>Add Student</button>
-              {(toggleAddStudent) && <AddStudent />}
-              <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setToggleRemoveStudent()}>Remove Student</button>
-              {(toggleRemoveStudent) && <RemoveStudent />}
               <button className="py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => setToggleSearchStudent()}>Search Student</button>
-              {(toggleSearchStudent) && <SearchStudent />}
+              {
+                (toggleSearchStudent) &&
+                <main className="flex flex-col p-5 space-y-5 rounded-md bg-sky-200 md:border-4 border-sky-500 font-plex-sans">
+                  <span className="text-lg text-center font-plex-sans-medium">Search Student</span>
+                  <div className="flex justify-between items-center space-x-3">
+                    <input id="email_id" className="w-full p-2 rounded-md" onChange={e => (setSearchString(e.target.value))} value={searchString} />
+                  </div>
+                </main>
+              }
             </div>
           </nav>
         </main>

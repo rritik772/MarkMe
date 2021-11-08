@@ -8,19 +8,7 @@ interface IAttendeInformation {
 };
 
 const AttendeeInformation: React.FC<IAttendeInformation> = ({ attendeeInfo }): JSX.Element => {
-  const [datestamp, setDatestamp] = useState<string>('');
-  const [timestamp, setTimestamp] = useState<string>('');
-
   const status = (attendeeInfo.status === 2) ? 'Present' : 'Absent';
-
-  useMemo(() => {
-    const date = attendeeInfo.stamp.toDate()
-    const dstamp = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
-    const tstamp = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-
-    setDatestamp(dstamp);
-    setTimestamp(tstamp);
-  }, [attendeeInfo])
 
   return (
     <>
@@ -43,11 +31,11 @@ const AttendeeInformation: React.FC<IAttendeInformation> = ({ attendeeInfo }): J
         </section>
         <section className="w-full grid grid-cols-2 justify-item-start rounded-md bg-transparent">
           <span className="font-plex-sans">Date</span>
-          <span className="font-plex-sans-medium truncate">{datestamp}</span>
+          <span className="font-plex-sans-medium truncate">{attendeeInfo.convertDatestamp()}</span>
         </section>
         <section className="w-full grid grid-cols-2 justify-item-start rounded-md bg-transparent">
           <span className="font-plex-sans">Time</span>
-          <span className="font-plex-sans-medium truncate">{timestamp}</span>
+          <span className="font-plex-sans-medium truncate">{attendeeInfo.convertTimestamp()}</span>
         </section>
         <section className="w-full grid grid-cols-2 justify-item-start rounded-md bg-transparent">
           <span className="font-plex-sans">Status</span>

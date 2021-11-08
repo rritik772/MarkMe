@@ -8,6 +8,8 @@ export class QRCodeModal {
   meeting_id: string;
   topic: string;
   uid: string;
+  checkSpace: boolean;
+  orgSpace: string;
 
   constructor
     (
@@ -16,7 +18,9 @@ export class QRCodeModal {
       host_email_id: string,
       meeting_id: string,
       topic: string,
-      uid: string
+      uid: string,
+      checkSpace: boolean,
+      orgSpace: string
     ) {
     this.timestamp = timestamp;
     this.destroyed = destroyed;
@@ -24,12 +28,14 @@ export class QRCodeModal {
     this.meeting_id = meeting_id;
     this.topic = topic;
     this.uid = uid;
+    this.checkSpace = checkSpace;
+    this.orgSpace = orgSpace;
   }
 
   convertDatestring() {
-    if ( this.host_email_id === "NA" ) return;
+    if (this.host_email_id === "NA") return;
     const firebaseDate = this.timestamp.toDate();
-    const date = `${firebaseDate.getDay()}/${firebaseDate.getMonth()}/${firebaseDate.getFullYear()}`;
+    const date = `${firebaseDate.getDate()}/${firebaseDate.getMonth()}/${firebaseDate.getFullYear()}`;
     return date
   }
 
@@ -53,7 +59,9 @@ export const QRCodeModalConverter = {
       host_email_id: qrCodeModal.host_email_id,
       meeting_id: qrCodeModal.meeting_id,
       topic: qrCodeModal.topic,
-      uid: qrCodeModal.uid
+      uid: qrCodeModal.uid,
+      checkSpace: qrCodeModal.checkSpace,
+      orgSpace: qrCodeModal.orgSpace
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): QRCodeModal {
@@ -64,9 +72,11 @@ export const QRCodeModalConverter = {
       data.host_email_id,
       data.meeting_id,
       data.topic,
-      data.uid
+      data.uid,
+      data.checkSpace,
+      data.orgSpace
     )
   }
 }
 
-export const QRCodeModalDefault = new QRCodeModal(serverTimestamp() as Timestamp, false, "NA", "NA", "NA", "NA");
+export const QRCodeModalDefault = new QRCodeModal(serverTimestamp() as Timestamp, false, "NA", "NA", "NA", "NA", false, "NA");
