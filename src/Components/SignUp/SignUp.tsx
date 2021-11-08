@@ -52,7 +52,7 @@ function SignUp() {
       setAlert(new Message(0, "Full name is too short."));
       setTimeout(() => setAlert(undefined), 4000);
       return;
-    } else if (uniqueID.length < 2) {
+    } else if (uniqueID.length < 1) {
       setAlert(new Message(0, "Unique ID is too short."));
       setTimeout(() => setAlert(undefined), 4000);
       return;
@@ -73,6 +73,14 @@ function SignUp() {
       setTimeout(() => setAlert(undefined), 4000);
       return;
     } else {
+
+      const regex = /^[a-z0-9].?[a-z0-9-+]+.?[a-z0-9-]+@[a-z]+\.[a-z][.a-z]+$/
+      if (regex.test(email) === false) {
+        setAlert(new Message(0, "Invalid email address"));
+        setTimeout(() => setAlert(undefined), 4000);
+        return;
+      }
+
       const hashedPass = sha256(password1)
       const signupDetails: ISignUp = {
         password: hashedPass,

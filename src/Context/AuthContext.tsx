@@ -3,7 +3,7 @@ import { onAuthStateChanged, User } from "firebase/auth"; import React, { useCon
 import Loading from "../Components/Loading/Loading";
 import { Message } from "../Components/Message/MessageBox";
 import { auth } from "./../../firebase";
-import { createQrCode, ICreateQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist, IBarcodeExist } from "./QRCodeContext";
+import { createQrCode, ICreateQrCode, markStudent, getStudentsWithDocRef, getBarcodesByUser, getUserAttendance, getBarcodeData, destroyQRCode, barcodeExist, IBarcodeExist, deleteAttendance } from "./QRCodeContext";
 import { login, logout, signup, getUserDetails, userAlreadyExist, sendPasswordReset, updateUserDetails, getUserProfilePicURL, sendVerificationEmail } from "./UserContext";
 import UserModal, { ISignUp } from "../Modal/UserModal";
 import { AttendeeModal } from "../Modal/AttendeeModal";
@@ -32,6 +32,7 @@ export interface AuthContextType {
     UpdateUserDetails: undefined | ((userModal: UserModal, file: File) => Promise<Message>);
     GetUserProfilePicURL: undefined | ((uid: string) => Promise<string>);
     SendVerificationEmail: undefined | ((uid: string) => Promise<Message>);
+    DeleteUserAttandance: undefined | ((docRef: string, uid: string) => Promise<Message>)
 }
 
 const AuthContextTypeDefault: AuthContextType =  {
@@ -54,7 +55,8 @@ const AuthContextTypeDefault: AuthContextType =  {
     SendPasswordReset: undefined,
     UpdateUserDetails: undefined,
     GetUserProfilePicURL: undefined,
-    SendVerificationEmail: undefined
+    SendVerificationEmail: undefined,
+    DeleteUserAttandance: undefined,
 }
 
 // -----------------------------------------------------
@@ -161,6 +163,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     async function BarcodeExist( docRef: string ): Promise<IBarcodeExist> {
         return await barcodeExist(docRef)
     }
+
+    async function DeleteUserAttandance(docRef: string, uid: string): Promise<Message> {
+        return await deleteAttendance(docRef, uid);
+    }
     // -----------------------------------------------------------------
 
     const values = { 
@@ -183,7 +189,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         SendPasswordReset,
         UpdateUserDetails,
         GetUserProfilePicURL,
-        SendVerificationEmail
+        SendVerificationEmail,
+        DeleteUserAttandance
     }
 
     if ( loading ) return <Loading/>

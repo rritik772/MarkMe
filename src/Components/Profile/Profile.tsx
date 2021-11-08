@@ -7,10 +7,11 @@ const Profile = () => {
   return (
     <div>
         <div className="svg-background-blurry"></div>
-      <div className="space-y-10 p-5">
-        <section className="grid grid-cols-3 lg:w-5/12 mx-auto font-plex-sans">
+      <div className="space-y-10 p-5 mt-10">
+        <section className="flex justify-center space-x-10 lg:w-5/12 mx-auto font-plex-sans">
           <Link to="/dashboard" className="justify-self-center"><ArrowCircleLeftIcon className="h-10 text-blue-500" /></Link>
           <span className="text-3xl font-plex-sans justify-self-center">Profile</span>
+          <Link to="/dashboard/profile/updateProfile" className="justify-self-center"><ArrowCircleRightIcon className="h-10 text-blue-500" /></Link>
         </section>
         <main className="w-full lg:w-7/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mx-auto p-5 rounded-md">
           <Link className="flex flex-col items-center space-y-5 p-5 h-44 md:h-48 w-full shadow-sm hover:shadow-lg border-b-2 rounded-md duration-200 bg-white" to="/dashboard/profile/myAttendance">

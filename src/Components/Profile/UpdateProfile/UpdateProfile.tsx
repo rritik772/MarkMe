@@ -17,6 +17,7 @@ const UpdateProfile = () => {
 
   const profilePicSetter = (files: FileList | null) => {
     if (files === null) return;
+    console.log(files)
     if (files.length === 0 || files[0] === undefined) {
       setAlert(new Message(0, "Please provide a profile picture."))
       setTimeout(() => setAlert(undefined), 4000);
@@ -28,6 +29,20 @@ const UpdateProfile = () => {
 
   const handleUpdateProfile = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (uniqueID.length < 1) {
+      setAlert(new Message(0, "Unique ID too short"))
+      setTimeout(() => setAlert(undefined), 4000);
+      return;
+    } else if (fullName.length < 3) {
+      setAlert(new Message(0, "Full name too short"))
+      setTimeout(() => setAlert(undefined), 4000);
+      return;
+    } else if (university.length < 3) {
+      setAlert(new Message(0, "University length too short"))
+      setTimeout(() => setAlert(undefined), 4000);
+      return;
+    }
 
     const modal = new UserModal(
       uniqueID,
