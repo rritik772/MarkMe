@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { confirmPasswordReset, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, User } from "firebase/auth"
 import { collection, setDoc, doc, getDoc, where, query, getDocs, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { Message } from "../Components/Message/MessageBox";
@@ -9,12 +9,15 @@ import { uploadBytes } from "firebase/storage";
 ////
 // create users and its infomation
 export const signup = async (signupDetails: ISignUp): Promise<Message> => {
+
   return await createUserWithEmailAndPassword(auth,
     signupDetails.userModal.email,
     signupDetails.password)
     .then(async (userCredential): Promise<Message> => {
       const { user } = userCredential;
       const user_id = user.uid;
+
+      sendVerificationEmailToUser(user);
 
       const ref = doc(firestore, "users", user_id).withConverter(UserModalConverter);
 
@@ -49,12 +52,22 @@ export const signup = async (signupDetails: ISignUp): Promise<Message> => {
 export const login = async (email: string, password: string): Promise<Message> => {
   return await signInWithEmailAndPassword(auth, email, password)
     .then((userCrediential): Message => {
-      if (userCrediential.user.emailVerified === false)
+      if (userCrediential.user.emailVerified === false) {
+        sendVerificationEmailToUser(userCrediential.user);
         return new Message(1, "Email not verified")
+      }
       return new Message(2, "Successful Logged in.")
     })
     .catch((error): Message => {
-      return new Message(0, "Something is wrong.")
+      switch (error.code) {
+        case 'auth/wrong-password':
+          return new Message(0, "Wrong Password.")
+        case 'auth/user-not-found':
+          return new Message(0, "User such user exist.")
+        default:
+          console.log(error)
+          return new Message(0, "Something is wrong.")
+      }
     })
 }
 // ---------------------------------------------------------------------
@@ -175,12 +188,10 @@ export const getUserProfilePicURL = async (uid: string): Promise<string> => {
 
 ////
 // send variafication email to user
-export const sendVerificationEmail = async (email: string): Promise<Message> => {
+export const sendVerificationEmailToUser = async (user: User): Promise<Message> => {
   let message = new Message(0, "Something went wrong.");
-  const uid = await getUIDFromEmail(email);
-  if (uid === "NA") return message;
 
-  return sendVerificationEmail(uid)
+  return sendEmailVerification(user)
     .then(() => {
       console.log("Verification sent")
       message = new Message(2, "Verification sent successful.")
@@ -207,3 +218,8 @@ export const getUIDFromEmail = async (email: string): Promise<string> => {
     return "NA";
   }
 }
+// -----------------------------------------------------------------------------
+
+// export const verifiedEmail = async (): Promise<void> => {
+//   confirmPasswordReset
+// }

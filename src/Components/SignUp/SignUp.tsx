@@ -1,10 +1,9 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import useToggle from "../../Library/useToggle";
-import { sha256 } from "js-sha256";
 
 import MessageBox, { Message } from "../Message/MessageBox";
 import { useAuth } from "../../Context/AuthContext";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import UserModal, { ISignUp } from "../../Modal/UserModal";
 
 function SignUp() {
@@ -19,10 +18,10 @@ function SignUp() {
   const [alert, setAlert] = useState<Message | undefined>();
   const [formVisible, setFormVisible] = useToggle(true);
 
-  const { verified, currentUser, SignUp, UserAlreadyExist } = useAuth();
+  const { currentUser, verified, SignUp, UserAlreadyExist, GetUserDetails } = useAuth();
   const history = useHistory();
 
-  if (currentUser) history.push("/dashboard")
+  if (verified) history.push("/dashboard")
 
   const handleEmailCheckup = () => {
     setAlert(undefined);
@@ -60,11 +59,11 @@ function SignUp() {
       setAlert(new Message(0, "University length is too sort."));
       setTimeout(() => setAlert(undefined), 4000);
       return;
-    } else if (password1.length < 4) {
+    } else if (password1.length <= 6) {
       setAlert(new Message(0, "Password length is too short."))
       setTimeout(() => setAlert(undefined), 4000);
       return;
-    } else if (password2.length < 4) {
+    } else if (password2.length <= 6) {
       setAlert(new Message(0, "Repeat Password length is too short."))
       setTimeout(() => setAlert(undefined), 4000);
       return;
@@ -81,9 +80,8 @@ function SignUp() {
         return;
       }
 
-      const hashedPass = sha256(password1)
       const signupDetails: ISignUp = {
-        password: hashedPass,
+        password: password1,
         userModal: new UserModal(
           uniqueID,
           email,
@@ -100,7 +98,7 @@ function SignUp() {
 
       const messageType = message.messageType
       if (messageType === 2)
-        history.push("dashboard");
+        history.push("/");
       else {
         setAlert(message);
         setTimeout(() => setAlert(undefined), 4000);
@@ -110,55 +108,36 @@ function SignUp() {
 
   return (
     <>
-      {
-        alert && <MessageBox message={alert} />
-      }
       <div className="w-full svg-background-wave"></div>
       <section className="flex flex-col items-center space-y-10 my-10">
         <span className="text-3xl uppercase font-plex-sans">SignUp</span>
       </section>
-      <main className="md:w-1/2 lg:w-5/12 xl:w-4/12 mx-auto p-5 rounded-md shadow-sm bg-white border border-sky-500 hover:shadow-xl duration-200">
-        <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-          <div className="flex flex-col space-y-5 text-lg">
+      {
+        alert && <MessageBox message={alert} />
+      }
+      <main className="sm:w-7/12 lg:w-4/12 xl:3/12 mx-auto p-5 rounded-md border border-sky-500 bg-white hover:shadow-lg">
+        <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)} className="divide-y-2 divide-gray-400 flex flex-col space-y-3">
+          <div className="flex flex-col space-y-4 text-lg">
             {
               (formVisible) &&
               <>
-                <div className="flex flex-col space-y-2">
-                  <label htmlFor="email" className="text-wide font-plex-serif">Email</label>
-                  <input type="email" id="email" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label htmlFor="password" className="text-wide font-plex-serif">Password</label>
-                  <input type="password" id="password" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={password1} onChange={e => setPassword1(e.target.value)} />
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label htmlFor="Rpassword" className="text-wide font-plex-serif">Repeat password</label>
-                  <input type="password" id="Rpassword" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={password2} onChange={e => setPassword2(e.target.value)} />
-                </div>
+                <input type="email" autoFocus id="email" placeholder="Email..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type="password" id="password" placeholder="Password..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={password1} onChange={e => setPassword1(e.target.value)} />
+                <input type="password" id="Rpassword" placeholder="Confirm Password..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={password2} onChange={e => setPassword2(e.target.value)} />
               </>
             }
             {
               (!formVisible) &&
               <>
-                <div className="flex flex-col space-y-2">
-                  <label htmlFor="name" className="text-wide font-plex-serif">Full name</label>
-                  <input type="text" id="name" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={fullName} onChange={e => setFullName(e.target.value)} />
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label htmlFor="unique_id" className="text-wide font-plex-serif">Unique ID</label>
-                  <input type="text" id="unique_id" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={uniqueID} onChange={e => setUniqueID(e.target.value)} />
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label htmlFor="unversity" className="text-wide font-plex-serif">University</label>
-                  <input type="text" id="university" placeholder="Type here..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={university} onChange={e => setUniversity(e.target.value)} />
-                </div>
+                  <input type="text" id="name" placeholder="Full Name..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={fullName} onChange={e => setFullName(e.target.value)} />
+                  <input type="text" id="unique_id" placeholder="Unique ID..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={uniqueID} onChange={e => setUniqueID(e.target.value)} />
+                  <input type="text" id="university" placeholder="University..." className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={university} onChange={e => setUniversity(e.target.value)} />
               </>
             }
             {
               formVisible && (
                 <div className="flex space-x-4">
                   <button className="w-full py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={() => { setFormVisible(); handleEmailCheckup() }}>Next</button>
-                  <Link to="/" className="w-full text-center py-2 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg">Login</Link>
                 </div>
               )
             }
@@ -170,6 +149,7 @@ function SignUp() {
               </div>
             }
           </div>
+          <Link to="/" className="pt-3 font-plex-serif hover:underline hover:text-blue-800 text-gray-500 text-sm">Already have a account?</Link>
         </form>
       </main>
     </>

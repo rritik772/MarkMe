@@ -104,30 +104,34 @@ const GenerateQrCode = () => {
           {!loading && <Link to={forwardlink} className="justify-self-end"><ArrowCircleRightIcon className="h-10 text-blue-500" /></Link>}
         </section>
         <main className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full lg:w-1/2 mx-auto p-5 bg-white shadow-xl">
-          <form className="p-5 space-y-4 text-lg">
+          <form className="p-5 space-y-4 text-lg flex flex-col">
             <div className="flex flex-col space-y-2">
-              <label htmlFor="meeting_id font-plex-sans">Meeting ID</label>
-              <input type="number" autoFocus id="meeting_id" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={meetingID} onChange={(e) => setMeetingID(e.target.value)} placeholder="Type here..." />
+              {/* <label htmlFor="meeting_id font-plex-sans">Meeting ID</label> */}
+              <input type="number" autoFocus id="meeting_id" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={meetingID} onChange={(e) => setMeetingID(e.target.value)} placeholder="Meeting ID..." />
             </div>
             <div className="flex flex-col space-y-2">
-              <label htmlFor="topic">Topic</label>
-              <input type="text" id="topic" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="Type here..." />
+              {/* <label htmlFor="topic">Topic</label> */}
+              <input type="text" id="topic" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="Topic..." />
             </div>
             <div className="flex flex-col space-y-2">
-              <label htmlFor="host_id" className="">Host Email ID</label>
-              <input type="email" id="host_id" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={hostEmailID} onChange={(e) => setHostEmailID(e.target.value)} placeholder="Type here..." />
+              {/* <label htmlFor="host_id" className="">Host Email ID</label> */}
+              <input type="email" id="host_id" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={hostEmailID} onChange={(e) => setHostEmailID(e.target.value)} placeholder="Host Email ID..." />
             </div>
             <div className="flex space-x-2">
               <input type="checkbox" id="attandanceSpace" checked={checkedSpace} onChange={e => setCheckedSpace(e.target.checked)} />
               <label htmlFor="attandanceSpace" className="font-plex-sans">Same space?</label>
             </div>
+            {
+              loading ?
+                <button className="w-full py-2 mt-5 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={(e) => handleWritingQrCode(e)}>Generate Qr Code</button> :
+                <Link to={forwardlink} className="justify-self-end text-center w-full bg-sky-500 py-3 rounded-md transition duration-300 hover:bg-blue-500 hover:shadow-lg text-white font-plex-sans-medium">Next</Link>
+            }
           </form>
-          <section className="text-center place-self-center p-5 rounded-md border-4 border-black bg-white">
+          <section className={`text-center place-self-center p-5 rounded-md border-4 border-black bg-white ${(loading)&&'filter blur-md'}`}>
             <QRCode
               value={QRCodeString}
               size={250}
             />
-            <button className="w-full py-2 mt-5 rounded-md bg-sky-500 text-white font-plex-sans-medium transition duration-300 hover:bg-blue-500 hover:shadow-lg" onClick={(e) => handleWritingQrCode(e)}>Generate Qr Code</button>
           </section>
         </main>
       </div>
