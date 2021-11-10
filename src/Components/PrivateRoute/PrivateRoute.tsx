@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Redirect, Route } from "react-router-dom";
 import { useAuth } from '../../Context/AuthContext';
 import Loading from '../Loading/Loading';
@@ -10,10 +10,11 @@ export interface IPrivateRoute {
 }
 
 const PrivateRoute: React.FC<IPrivateRoute> = ({ comp: Component, ...rest }): JSX.Element => {
-  const { currentUser } = useAuth();
+  const { currentUser, verified, GetUserDetails } = useAuth();
+
   return (
-    <Route {...rest} render={ props => {
-        return (currentUser)? React.createElement(Component, props) : <Redirect to="/"/>
+    <Route {...rest} render={props => {
+      return (currentUser && currentUser.emailVerified ) ? React.createElement(Component, props) : <Redirect to="/" />
     }}>
     </Route>
   )
