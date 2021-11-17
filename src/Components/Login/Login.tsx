@@ -12,7 +12,7 @@ const Login: React.FC<{ alertProp?: Message }> = ({ alertProp }) => {
   const [alert, setAlert] = useState<Message | undefined>(alertProp);
 
   const history = useHistory();
-  const { verified, currentUser, Login, SendPasswordReset, GetUserDetails } = useAuth();
+  const { verified, Login, SendPasswordReset } = useAuth();
 
   if (verified) history.push("/dashboard")
 

@@ -24,6 +24,12 @@ const UpdateProfile = () => {
       return;
     }
 
+    if (files[0].size > 100000) {
+      setAlert(new Message(0, "File size must be less then 100KB."))
+      setTimeout(() => setAlert(undefined), 4000);
+      return;
+    }
+
     setProfilePic(files[0]);
   }
 
