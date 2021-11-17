@@ -1,4 +1,4 @@
-import { confirmPasswordReset, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, User } from "firebase/auth"
+import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, User } from "firebase/auth"
 import { collection, setDoc, doc, getDoc, where, query, getDocs, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { Message } from "../Components/Message/MessageBox";
@@ -31,10 +31,14 @@ export const signup = async (signupDetails: ISignUp): Promise<Message> => {
       ))
         .then((): Message => {
           console.log("Document written succefully")
+          logout();
+
           return new Message(2, "Account created Successfully")
         })
         .catch((error): Message => {
           console.log("Cannot write user document", error)
+          logout();
+
           return new Message(0, "Somthing gone wrong.")
         })
     })

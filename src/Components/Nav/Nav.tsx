@@ -9,13 +9,12 @@ const Nav = () => {
   const [ toggleNavBar, setToggleNavBar ] = useToggle();
   const [ alert, setAlert ] = useState<Message | undefined>()
 
-  const { currentUser, Logout } = useAuth();
+  const { currentUser, verified, Logout } = useAuth();
 
-  const history = useHistory();
 
   const logoutUser = async () => {
     const message: Message = await Logout!!();
-    const messageType = await message.messageType;
+    const messageType = message.messageType;
 
     if ( messageType === 2 ){
       console.log("Logged out")
@@ -34,7 +33,7 @@ const Nav = () => {
             <section className={`flex flex-col md:flex-row items-end ${(toggleNavBar)?'block':'hidden'} md:block md:space-x-5 text-center order-last md:order-first`}>
               <a href="/contact" className="hover:underline">Contact Me</a>
               <a href="/about_me" className="hover:underline">About Me</a>
-              { currentUser && <button onClick={() => logoutUser()} className="hover:underline">Log out</button> }
+              { currentUser && verified && <button onClick={() => logoutUser()} className="hover:underline">Log out</button> }
             </section>
           }
           <MenuIcon className='h-6 text-white md:hidden' onClick={() => setToggleNavBar()}/>
