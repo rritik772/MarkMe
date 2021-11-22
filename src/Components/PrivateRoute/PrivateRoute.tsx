@@ -1,16 +1,15 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { LazyExoticComponent } from 'react';
 import { Redirect, Route } from "react-router-dom";
 import { useAuth } from '../../Context/AuthContext';
-import Loading from '../Loading/Loading';
 
 export interface IPrivateRoute {
   exact: boolean;
-  comp: () => JSX.Element;
+    comp: LazyExoticComponent<() => JSX.Element>;
   path: string;
 }
 
 const PrivateRoute: React.FC<IPrivateRoute> = ({ comp: Component, ...rest }): JSX.Element => {
-  const { currentUser, verified, GetUserDetails } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <Route {...rest} render={props => {

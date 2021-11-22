@@ -1,10 +1,11 @@
 import { ArrowCircleLeftIcon, ArrowCircleRightIcon } from "@heroicons/react/outline";
 import { Link, useParams } from "react-router-dom";
-import QRCode from "qrcode.react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy } from "react";
+
+const QRCode = lazy(() => import("qrcode.react"));
+import AttendeeIterator from "./AttendeeIterator";
 
 import useToggle from "../../Library/useToggle";
-import AttendeeIterator from "./AttendeeIterator";
 import { useAuth } from "../../Context/AuthContext";
 import { Message } from "../Message/MessageBox";
 import { QRCodeModal, QRCodeModalDefault } from "../../Modal/QRCodeModal";

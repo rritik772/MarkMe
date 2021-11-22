@@ -1,7 +1,7 @@
 import { ArrowCircleLeftIcon, ArrowCircleRightIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import QRCode from "qrcode.react";
+import { useEffect, useState, lazy } from "react";
+const QRCode = lazy(() => import("qrcode.react"));
 
 import "./GenerateQrCode.css"
 import { ICreateQrCode } from "../../Context/QRCodeContext";
@@ -116,7 +116,7 @@ const GenerateQrCode = () => {
               {/* <label htmlFor="host_id" className="">Host Email ID</label> */}
               <input type="email" id="host_id" className="p-2 md:p-3 rounded-md text-black font-plex-sans border-b-2 border-gray-300 hover:shadow-lg shadow-sm focus:shadow-lg duration-300" value={hostEmailID} onChange={(e) => setHostEmailID(e.target.value)} placeholder="Host Email ID..." />
             </div>
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 items-center">
               <input type="checkbox" id="attandanceSpace" checked={checkedSpace} onChange={e => setCheckedSpace(e.target.checked)} />
               <label htmlFor="attandanceSpace" className="font-plex-sans">Same space?</label>
             </div>

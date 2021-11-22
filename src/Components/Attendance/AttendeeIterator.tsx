@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy } from "react";
 import { PhotographIcon, TrashIcon } from '@heroicons/react/outline';
 
-import { Status } from "./InterfaceAttendee";
 import AttendeeInformation from "./AttendeeInformation";
+const Loading = lazy(() => import("../Loading/Loading"));
+
+import { Status } from "./InterfaceAttendee";
 import { useAuth } from "../../Context/AuthContext";
-import Loading from "../Loading/Loading";
 import { AttendeeModal } from "../../Modal/AttendeeModal";
 import { QRCodeModal, QRCodeModalDefault } from "../../Modal/QRCodeModal";
-import { Message } from "../Message/MessageBox";
 
 interface IAttendeeIterator {
   docRef: string;

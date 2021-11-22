@@ -1,12 +1,14 @@
-import { useMemo, useState } from 'react';
-import QrReader from 'react-qr-reader'
+import { useMemo, useState, lazy } from 'react';
+
+const QrReader = lazy(() => import('react-qr-reader'));
+const MeetingInfo = lazy(() => import('./Meeting_Info'));
+
 import { Link } from "react-router-dom";
 import { ArrowCircleLeftIcon } from "@heroicons/react/outline";
 
 import "./ScanQrCode.css"
 import useToggle from '../../Library/useToggle';
 import MessageBox, { Message } from '../Message/MessageBox';
-import MeetingInfo from './Meeting_Info';
 import { useAuth } from '../../Context/AuthContext';
 import { AttendeeModal } from '../../Modal/AttendeeModal';
 import UserModal from '../../Modal/UserModal';
