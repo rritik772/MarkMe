@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from "react";
-import { EmojiHappyIcon } from "@heroicons/react/outline";
+import React from "react";
 
 import { AttendeeModal } from "../../Modal/AttendeeModal";
 

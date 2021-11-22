@@ -1,12 +1,14 @@
 import { ArrowCircleLeftIcon, EmojiHappyIcon, ExclamationCircleIcon, SearchIcon } from "@heroicons/react/outline";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
-import useToggle from "../../../Library/useToggle";
 import { AttendeeModal } from "../../../Modal/AttendeeModal";
-import AttendeeInformation from "../../Attendance/AttendeeInformation";
 import { Status } from "../../Attendance/InterfaceAttendee";
+
+import useToggle from "../../../Library/useToggle";
+
 import Loading from "../../Loading/Loading";
+import AttendeeInformation from "../../Attendance/AttendeeInformation";
 
 const MyAttendance = () => {
   const [userAllAttendance, setUserAllAttendance] = useState<AttendeeModal[]>([]);

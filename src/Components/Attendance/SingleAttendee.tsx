@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, lazy } from "react";
 import { EmojiHappyIcon } from "@heroicons/react/outline";
 
-import { IAttendee, Status } from "./InterfaceAttendee";
-import AttendeeInformation from "./AttendeeInformation";
-import { useAuth } from "../../Context/AuthContext";
+import { Status } from "./InterfaceAttendee";
 import { AttendeeModal } from "../../Modal/AttendeeModal";
+
+const AttendeeInformation = lazy(() => import("./AttendeeInformation"));
 
 const SingleAttendee: React.FC<{ Information: AttendeeModal }> = ({ Information }): JSX.Element => {
   const [isClicked, setIsClicked] = useState<boolean>(false);

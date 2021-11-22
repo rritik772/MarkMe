@@ -1,8 +1,7 @@
-import { CameraIcon, QrcodeIcon, IdentificationIcon, BriefcaseIcon } from "@heroicons/react/outline";
+import { CameraIcon, QrcodeIcon, IdentificationIcon } from "@heroicons/react/outline";
 import "./Dashboard.css"
 import { Link } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
-import AddStudent from "../AddStudent/AddStudent";
 
 const Dashboard = (): JSX.Element => {
   const { currentUser, BarcodeExist } = useAuth();
