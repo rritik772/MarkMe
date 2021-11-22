@@ -58,7 +58,6 @@ const GenerateQrCode = () => {
     const finding = spaceRegex.exec(hostEmailID) || '';
     setOrgSpace(finding[0])
 
-
     const qrCodeDetails: QRCodeModal = new QRCodeModal(
       serverTimestamp() as Timestamp,
       false,

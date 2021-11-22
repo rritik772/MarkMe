@@ -78,12 +78,12 @@ const UpdateProfile = () => {
   }, [])
 
   return (
-    <div className="space-y-10">
-      {alert && <MessageBox message={alert} />}
+    <div className="space-y-10 mt-10">
       <section className="grid grid-cols-3 lg:w-1/2 mx-auto font-plex-sans">
         <Link to="/dashboard/profile"><ArrowCircleLeftIcon className="h-10 text-blue-500" /></Link>
         <span className="text-3xl font-plex-sans">Update Profile</span>
       </section>
+      {alert && <MessageBox message={alert} />}
       <form className="w-full lg:w-7/12 grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto p-5 rounded-md" onSubmit={(e) => handleUpdateProfile(e)}>
         <div className="flex flex-col p-5 bg-white rounded-md shadow-md hover:shadow-xl duration-300 space-y-1">
           <label className="text-lg px-3 cursor-pointer" htmlFor="unique_id">Unique ID</label>
